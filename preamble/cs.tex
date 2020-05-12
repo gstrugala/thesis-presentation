@@ -1,0 +1,101 @@
+% Define a new coordinate system for the page:
+%
+% (-10,10)-----(0,10)------(1,10)
+%	  |			 |			 |
+%	  |			 |			 |
+% (-10,0)------(0,0)------(10,0)
+%	  |			 |			 |
+%	  |			 |			 |
+% (-10,-10)----(0,-10)----(10,-10)
+%
+\makeatletter
+\def\parsecomma#1,#2\endparsecomma{\def\page@x{#1}\def\page@y{#2}}
+\tikzdeclarecoordinatesystem{page}{
+    \parsecomma#1\endparsecomma
+    \pgfpointanchor{current page}{north east}
+    % Save the upper right corner
+    \pgf@xc=\pgf@x%
+    \pgf@yc=\pgf@y%
+    % save the lower left corner (excluding footline)
+    \pgfpointanchor{current page}{south west}
+    \pgf@xb=\pgf@x%
+    \pgf@yb=\dimexpr\pgf@y+3\quanta\relax%
+    % Transform to the correct placement
+    \pgfmathparse{(\pgf@xc-\pgf@xb)/120.*\page@x+(\pgf@xc+\pgf@xb)/2.}
+    \expandafter\pgf@x\expandafter=\pgfmathresult pt
+    \pgfmathparse{(\pgf@yc-\pgf@yb)/90.*\page@y+(\pgf@yc+\pgf@yb)/2.}
+    \expandafter\pgf@y\expandafter=\pgfmathresult pt}
+\makeatother
+
+
+% Five column layouts (pictures/text and left/right)
+%    l:(0,N)	  r:(0,N) l:(1,N)   r:(1,N) l:(2,N)   r:(2,N)
+%	  +-----------+		+-----------+	  +-----------+
+%	  |			  |		|			|	  |			  |
+%	  +-----------+		+-----------+	  +-----------+
+%	  |			  |		|			|	  |			  |
+%	  +-- col 0 --+		+-- col 1 --+	  +-- col 2 --+   ...
+%	  |			  |		|			|	  |			  |
+%	  +-----------+		+-----------+	  +-----------+
+%	  |			  |		|			|	  |			  |
+%	  +-----------+		+-----------+	  +-----------+
+%    l:(0,0)	  r:(0,0) l:(1,0)   r:(1,0) l:(2,0)   r:(2,0)
+\makeatletter
+\def\parsecomma#1,#2\endparsecomma{\def\page@x{#1}\def\page@y{#2}}
+\tikzdeclarecoordinatesystem{p5cl}{
+    \parsecomma#1\endparsecomma
+    \pgfpointanchor{current page}{south west}
+    % Save the upper right corner
+    \pgf@xc=\dimexpr\pgf@x+3\baselineskip+\colv\relax%
+    \pgf@yc=\dimexpr\pgf@y+11\quanta+15\baselineskip\relax%
+    % save the lower left corner
+    \pgf@xb=\dimexpr\pgf@x+2\baselineskip\relax%
+    \pgf@yb=\dimexpr\pgf@y+11\quanta\relax%
+    % Transform to the correct placement
+    \pgfmathparse{(\pgf@xc-\pgf@xb)*\page@x+\pgf@xb}
+    \expandafter\pgf@x\expandafter=\pgfmathresult pt
+    \pgfmathparse{(\pgf@yc-\pgf@yb)/15.*\page@y+\pgf@yb}
+    \expandafter\pgf@y\expandafter=\pgfmathresult pt}
+\tikzdeclarecoordinatesystem{p5cr}{
+    \parsecomma#1\endparsecomma
+    \pgfpointanchor{current page}{south west}
+    % Save the upper right corner
+    \pgf@xc=\dimexpr\pgf@x+3\baselineskip+2\colv\relax%
+    \pgf@yc=\dimexpr\pgf@y+11\quanta+15\baselineskip\relax%
+    % save the lower left corner
+    \pgf@xb=\dimexpr\pgf@x+2\baselineskip+\colv\relax%
+    \pgf@yb=\dimexpr\pgf@y+11\quanta\relax%
+    % Transform to the correct placement
+    \pgfmathparse{(\pgf@xc-\pgf@xb)*\page@x+\pgf@xb}
+    \expandafter\pgf@x\expandafter=\pgfmathresult pt
+    \pgfmathparse{(\pgf@yc-\pgf@yb)/15.*\page@y+\pgf@yb}
+    \expandafter\pgf@y\expandafter=\pgfmathresult pt}
+\tikzdeclarecoordinatesystem{t5cl}{
+    \parsecomma#1\endparsecomma
+    \pgfpointanchor{current page}{south west}
+    % Save the upper right corner
+    \pgf@xc=\dimexpr\pgf@x+3\baselineskip+\colv\relax%
+    \pgf@yc=\dimexpr\pgf@y+12\quanta+15\baselineskip\relax%
+    % save the lower left corner
+    \pgf@xb=\dimexpr\pgf@x+2\baselineskip\relax%
+    \pgf@yb=\dimexpr\pgf@y+12\quanta\relax%
+    % Transform to the correct placement
+    \pgfmathparse{(\pgf@xc-\pgf@xb)*\page@x+\pgf@xb}
+    \expandafter\pgf@x\expandafter=\pgfmathresult pt
+    \pgfmathparse{(\pgf@yc-\pgf@yb)/15.*\page@y+\pgf@yb}
+    \expandafter\pgf@y\expandafter=\pgfmathresult pt}
+\tikzdeclarecoordinatesystem{t5cr}{
+    \parsecomma#1\endparsecomma
+    \pgfpointanchor{current page}{south west}
+    % Save the upper right corner
+    \pgf@xc=\dimexpr\pgf@x+3\baselineskip+2\colv\relax%
+    \pgf@yc=\dimexpr\pgf@y+12\quanta+15\baselineskip\relax%
+    % save the lower left corner
+    \pgf@xb=\dimexpr\pgf@x+2\baselineskip+\colv\relax%
+    \pgf@yb=\dimexpr\pgf@y+12\quanta\relax%
+    % Transform to the correct placement
+    \pgfmathparse{(\pgf@xc-\pgf@xb)*\page@x+\pgf@xb}
+    \expandafter\pgf@x\expandafter=\pgfmathresult pt
+    \pgfmathparse{(\pgf@yc-\pgf@yb)/15.*\page@y+\pgf@yb}
+    \expandafter\pgf@y\expandafter=\pgfmathresult pt}
+\makeatother

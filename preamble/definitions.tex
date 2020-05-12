@@ -1,0 +1,153 @@
+%% Lengths
+
+% base unit for coordinates
+\newlength\quantum
+\newlength\quanta
+\setlength\quantum{3pt}
+\setlength\quanta{\quantum}
+
+% slides dimensions = N * quantum,
+% ratio 120/90 = 4/3, with 3 quanta
+% for the footline
+\setlength{\paperwidth}{120\quanta}
+\setlength{\paperheight}{93\quanta}
+
+% set a footline with total height (height + depth) of 3 quanta
+\newlength\tinyxheight
+\newlength\flheight
+\newlength\fldepth
+\settoheight{\tinyxheight}{\tiny x}
+\setlength\flheight{\dimexpr 1.5\quantum + 0.5\tinyxheight \relax}
+\setlength\fldepth{\dimexpr 1.5\quantum - 0.5\tinyxheight \relax}
+
+% width of a column in a five (V) columns layout
+\newlength\colv
+\newlength\colvsep  % including the inter-column spacing
+\setlength\colv{17.6\quanta}
+\setlength\colvsep{\dimexpr\colv + \baselineskip\relax}
+
+% big column width (two columns + one baseline skip)
+\newlength\bigcol
+\newlength\halfbigcol
+\setlength\bigcol{\dimexpr 2\colv + \baselineskip\relax}
+\setlength\halfbigcol{0.5\bigcol}
+
+% depth in Large fonts, for positioning titles
+\newlength\Largeydepth
+\settodepth{\Largeydepth}{\Large y}
+
+% temporary length to locally replace long length calculations
+\newlength\templen
+
+
+%% lists stuff
+\newenvironment{listed}{
+	\begin{itemize}[nosep]
+	\setlength\itemsep{2\quanta}  % adds to the existing baseline skip
+	}{
+	\end{itemize}
+	}
+
+% remove indentation
+\settowidth{\leftmargini}{\usebeamertemplate{itemize item}}
+\addtolength{\leftmargini}{.37\labelsep} % narrower than usual item symbol
+
+%% Overall style
+
+\colorlet{col}{orange}  % main color
+
+% square bullet items
+\setbeamertemplate{itemize item}[square]
+\setbeamercolor{itemize item}{fg=col}
+
+% enumitem overrides beamer settings,
+% so list styles have to be re-specified
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+
+
+%% TikZ based slide template
+
+% slide environment composed of a TikZ picture
+% with the following nodes
+%
+% (NW) ----- (N) ----- (NE)
+%   |         |         |
+%   |         |         |
+%  (W) ----- (C) ----- (E)
+%   |         |         |
+%   |         |         |
+% (SW) ----- (S) ----- (SE)
+
+\NewEnviron{slide}[1][]{%
+\begin{frame}[t]%
+	\makebox[\textwidth][c]{%
+		\begin{tikzpicture}[overlay, remember picture, inner sep=0pt]%
+		
+		\node (N) at (page cs:0,45) {};
+		\node (S) at (page cs:0,-45) {};
+		\node (W) at (page cs:-60,0) {};
+		\node (E) at (page cs:60,0) {};
+		\node (NW) at (page cs:-60,45) {};
+		\node (NE) at (page cs:60,45) {};
+		\node (SW) at (page cs:-60,-45) {};
+		\node (SE) at (page cs:60,-45) {};
+		\node (C) at (page cs:0,0) {};
+		
+		\node[anchor=north west, align=left, font=\Large,
+			  yshift=\Largeydepth+.95pt, xshift=-.95pt] (title)
+			at (page cs:-52,37) {#1};
+			
+			\normalsize\BODY
+		
+		\end{tikzpicture}}%
+\end{frame}}
+
+% draw help lines
+\newcommand\drawhelplines{
+	% title top lines
+	\draw[teal] (page cs:-60,37) -- (page cs:60,37)
+				(page cs:-60,31) -- (page cs:60,31);
+	% pictures grid
+	\draw[gray] foreach \c in {0,...,4}{
+				(p5cl cs:\c,0)  -- (p5cl cs:\c,15)
+				(p5cr cs:\c,0)  -- (p5cr cs:\c,15)
+					foreach \l in {0,...,15}{
+						(p5cl cs:\c,\l)  -- (p5cr cs:\c,\l)}};
+	% text grid
+	\draw[teal] foreach \c in {0,...,4}{
+					foreach \l in {0,...,14}{
+						(t5cl cs:\c,\l)  -- (t5cr cs:\c,\l)}};
+	% margin
+	\draw[col] (p5cr cs:1,-2) node (x) {} -- (x |- N);}
+
+% draw full grid
+\newcommand\drawfullgrid{
+	\draw[gray] foreach \x in {-60,...,60}{
+					(page cs:\x,-45) -- (page cs:\x,45)}
+				foreach \y in {-45,...,45}{
+					(page cs:-60,\y) -- (page cs:60,\y)};}
+
+
+%% Footline
+
+% white on black footline, to set it apart from the slide
+\setbeamercolor{head/foot}{fg=white, bg=black}
+\setbeamertemplate{footline}{
+\begin{beamercolorbox}[wd=\paperwidth,
+					   ht=\flheight,
+					   dp=\fldepth]{head/foot}
+	\makebox[.3333\paperwidth]{\insertsection}
+	\makebox[.3333\paperwidth]{\itshape\insertsubsection}
+	\hfill\textcolor{gray}{\insertframenumber{}}\hspace*{2\quantum}
+\end{beamercolorbox}%
+}
+\beamertemplatenavigationsymbolsempty  % remove navigation symbols
+
+
+
+
+
+
