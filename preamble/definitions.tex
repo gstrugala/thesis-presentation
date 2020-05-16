@@ -36,9 +36,12 @@
 \newlength\Largeydepth
 \settodepth{\Largeydepth}{\Large y}
 
+% M height in footnotesize fonts, for positioning tick labels
+\newlength\ssMheight
+\settoheight{\ssMheight}{\scriptsize M}
+
 % temporary length to locally replace long length calculations
 \newlength\templen
-
 
 %% lists stuff
 \newenvironment{listed}{
@@ -50,7 +53,7 @@
 
 % remove indentation
 \settowidth{\leftmargini}{\usebeamertemplate{itemize item}}
-\addtolength{\leftmargini}{.37\labelsep} % narrower than usual item symbol
+\addtolength{\leftmargini}{.36\labelsep} % narrower than usual item symbol
 
 %% Overall style
 
@@ -131,6 +134,25 @@
 					(page cs:-60,\y) -- (page cs:60,\y)};}
 
 
+
+%% Plot options
+\pgfkeys{/pgfplots/plot options/.style={
+    separate axis lines,
+    enlargelimits=false,
+    axis x line*=bottom,
+    axis x line shift=4\quanta,
+    axis y line shift=4\quanta,
+    axis y line*=left,
+    scale only axis,
+    ticklabel style={color=gray},
+    axis line style={gray!80!white, semithick},
+    major tick style={gray!80!white, semithick},
+    ticklabel style={font=\scriptsize},
+    xticklabel style={yshift=\ssMheight-3\quanta},
+    yticklabel style={xshift=\ssMheight-3\quanta},}}
+
+
+
 %% Footline
 
 % white on black footline, to set it apart from the slide
@@ -141,13 +163,25 @@
 					   dp=\fldepth]{head/foot}
 	\makebox[.3333\paperwidth]{\insertsection}
 	\makebox[.3333\paperwidth]{\itshape\insertsubsection}
-	\hfill\textcolor{gray}{\insertframenumber{}}\hspace*{2\quantum}
+	\hfill\insertframenumber{}\hspace*{2\quantum}
 \end{beamercolorbox}%
 }
 \beamertemplatenavigationsymbolsempty  % remove navigation symbols
 
 
+%% Quantities
+\newcommand{\xmath}[1]{\ensuremath{#1}\xspace}  % ensure math mode
 
-
-
-
+\newcommand{\Qh}{\xmath{\dot Q_\text{h}}}	% heating capacity
+\newcommand{\Qc}{\xmath{\skew{5}\dot Q_\text{c}}}	% cooling capacity
+\newcommand{\Qcs}{\xmath{\dot Q_\text{cs}}}	% sensible cooling capacity
+\newcommand{\Qcl}{\xmath{\dot Q_\text{cl}}}	% latent cooling capacity
+\newcommand{\Pel}{\xmath{P_\text{el}}}		% electrical input power
+\newcommand{\fc}[1][]{\xmath{f_{c#1}}}		% compressor frequency
+\newcommand{\fcn}[1][]{\xmath{\nu_{#1}}}	% norm. compressor frequency
+\newcommand{\Tr}[1][]{\xmath{T_{r#1}}}		% return air temperature
+\newcommand{\Twbr}[1][]{\xmath{T_{{\text{wb}r#1}}}}	% return air wet-bulb
+\newcommand{\Ts}{\xmath{T_s}}				% supply air temperature
+\newcommand{\To}[1][]{\xmath{T_{o#1}}}		% outdoor air temperature
+\newcommand{\mr}{\xmath{\dot m_\text{r}}}	% refrigerant mass flow rate
+\newcommand{\ma}[1][]{\xmath{\skew{5}\dot m_{\text{a}#1}}}
