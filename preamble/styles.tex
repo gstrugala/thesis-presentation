@@ -1,2 +1,42 @@
 \tikzstyle{becomes} = [triangle, col!50, minimum width=4\quanta,
 					   minimum height=2\quanta, fill]
+
+\tikzstyle{dot} = [circle, fill, scale=.3, inner sep=3pt]
+
+\tikzset{
+	fan/.pic={
+		\path[draw, join=round] (0,0) arc (140:40:#1/2) arc (320:220:#1/2)
+						  arc (40:140:#1/2) arc (220:320:#1/2);},
+	fan2/.pic={
+		\path[draw, join=round] (0,0) arc (110:70:#1/2) arc (290:250:#1/2)
+						  arc (70:110:#1/2) arc (250:290:#1/2);}}
+
+
+\tikzset{
+	midarrow/.style args={#1-#2}{
+		postaction=decorate,
+		decoration={
+			markings,
+			mark=at position #1 with {\arrow{#2}}}}}
+
+\tikzstyle{HX} = [decorate, decoration = {zigzag,
+										  segment length = 2.5mm,
+										  amplitude = 1mm}]
+
+\tikzstyle{expValve} = [hourglass, draw,
+						minimum height=4mm, minimum width=2mm]
+
+
+\tikzset{onslide/.code args={<#1>#2}{
+ 	\only<#1>{\pgfkeysalso{#2}} 
+}}
+
+\tikzset{
+	hl/.style args={#1 on #2}{
+		background default #1=black,
+		background #1=col,
+		#1 on=#2},
+	hlb/.style args={#1 on #2}{
+		background default #1=gray,
+		background #1=black,
+		#1 on=#2}}

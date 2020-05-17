@@ -1,0 +1,350 @@
+\begin{slide}[Les environnements intérieur et extérieur\\
+			  sont chacun contrôlés dans un cabanon séparé]
+
+\begin{scope}[shift={(p5cl cs:0,3)}, x=.25\bigcol, y=\baselineskip]
+
+\node[anchor=base, gray] at (2, 10.25) {zone intérieure};
+\fill[gray!20] (0,0) -| (4,6) -- (2,9)
+			-- (0,6) |- (.2,5) |- (0,3.25) -- cycle;
+
+% indoor unit
+\node[minimum width=1cm, minimum height=3mm, rectangle, draw, thick,
+	  rounded corners=.25\quantum] (IU) at (2.5,4.5) {};
+\fill[gray!60!black] (IU.202) |- (IU.338 |- IU.west) |- cycle;
+\path (.1,4.125) pic [rotate=90, thick] {fan=.4} node[dot, scale=1] {};
+
+% points
+\draw[latex-, col!50, thick] (IU.north) -- ++(0,1)
+	node[dot, anchor=south, black, label={[black]above left:$r$}] (r) {};
+\draw[-latex, col, thick] (IU.south) ++(0,.2) -- ++(0,-1)
+	node[dot, anchor=north, black, label={[black]below left:$s$}] {};
+
+% auxiliary heater
+\draw[semithick] (0,.5) -- ++(.2,0)
+	++(0,.16) rectangle ++(.6,-.33)++(0,.16)
+	-| node[right, xshift=3pt] {\Lightning} ++(.2,-.5)
+	foreach \x in {.35,.5,.65}{(\x,.66) -- (\x,.34)};
+
+\end{scope}
+
+
+
+\begin{scope}[shift={(p5cl cs:3,3)}, x=.25\bigcol, y=\baselineskip]
+
+\node[anchor=base, gray] at (2, 10.25) {zone extérieure};
+\fill[gray!20] (0,0) -| (4,3.25) -| (3.8,5) -| (4,6)
+			-- (2,9) -- (0,6) -- cycle;
+\path (3.9,4.125) pic [rotate=90, thick] {fan=.4} node[dot, scale=1] {};
+
+% outdoor unit
+\node[minimum width=1cm, minimum height=6mm, rectangle, draw, thick,
+	  rounded corners=.25\quantum] (OU) at (1.5,2.3) {};
+\node[circle, draw, minimum size=4\quanta] (grid) at ($(OU)-(.15,0)$) {};
+\draw[ultra thin] foreach \angle in {-54, -36, ..., 54}{
+	(grid.\angle) -- (grid.{180-\angle})
+	(grid.{90+\angle}) -- (grid.{-90-\angle})};
+\node[circle, fill=gray!60!black, scale=4]
+	at ($(grid.east)!0.5!(OU.east)$) {};
+
+% points
+\coordinate (C1) at (2,0);
+\node[dot, label={[black, yshift=3pt]above:$o$}] at (IU -| C1) {};
+
+% auxiliary heater
+\draw[semithick] (4,.5) -- ++(-.2,0)
+	++(0,.16) rectangle ++(-.6,-.33)++(0,.16)
+	-| node[left, xshift=-3pt] {\Lightning} ++(-.2,-.5)
+	foreach \x in {.35,.5,.65}{(4-\x,.66) -- (4-\x,.34)};
+
+\end{scope}
+
+
+% refrigerant lines
+\only<1>{
+\draw[col, midarrow=0.5-latex, semithick] (OU.west)++(0,.05)
+	-| ($(IU.east)+(.55,.05)$) -- ($(IU.east)+(0,.05)$);
+\draw[gray, midarrow=0.65-latex, semithick] (IU.east)++(0,-.05)
+	-- ++(.45,0) |- ($(OU.west)-(0,.05)$);
+\node[col, yshift=3\quanta] at (OU.west -| N) {\scriptsize gaz};
+\node[gray, yshift=-3\quanta] at (OU.west -| N) {\scriptsize liquide};
+}
+\only<2>{
+\draw[gray, midarrow=0.65-latex, semithick] (IU.east)++(0,.05) -- ++(.55,0)
+	|- ($(OU.west)+(0,.05)$);
+\draw[col, midarrow=0.5-latex, semithick] (OU.west)++(0,-.05)
+	-| ($(IU.east)+(.45,-.05)$) -- ($(IU.east)-(0,.05)$);
+\node[col, yshift=-3\quanta] at (OU.west -| N) {\scriptsize gaz};
+\node[gray, yshift=3\quanta] at (OU.west -| N) {\scriptsize liquide};
+}
+
+% heat flux
+\only<1>{
+\node[becomes, rotate=90, anchor=south,
+	  label={[left, label distance=\quantum]:\Qh}]
+	at ($(IU.west)-(2\quanta,0)$) {};
+\node[becomes, rotate=90, anchor=north,
+	  label={[right, xshift=3.5\quanta]:$\skew{5}\dot Q_\text{abs}$}]
+	at ($(OU.east)+(2\quanta,0)$) {};
+}
+\only<2>{
+\node[becomes, rotate=-90, anchor=north,
+	  label={[left, xshift=-3.5\quanta]:\Qc}]
+	at ($(IU.west)-(2\quanta,0)$) {};
+\node[becomes, rotate=-90, anchor=south,
+	  label={[right, xshift=\quantum]:$\skew{5}\dot Q_\text{rej}$}]
+	at ($(OU.east)+(2\quanta,0)$) {};
+}
+
+\end{slide}
+
+
+
+
+\begin{slide}[Le débit d'air de l'unité intérieure\\
+			  est mesuré avec un \emph{duct blaster}]
+
+%\drawhelplines
+
+\begin{scope}[shift={(p5cl cs:0.3,6)}]
+
+% air flux
+\draw[line width=1mm, -{Triangle[scale=0.7]}, col!50] (.2,3.4)
+	node[above, yshift=1mm, black] {$r$} to[out=270, in=110] (.35,2.4);
+\draw[line width=1mm, -{Triangle[scale=0.7]}, col] (.4,2.25)
+	to[out=320, in=180] (1.4,1.95) node[right, black, xshift=1mm] {$s$};
+
+% indoor unit
+\filldraw[gray!50, very thick] (0,3) rectangle (-.2,2);
+\draw[dotted] (0,3) -- (0.5,3);
+\draw[very thick, line cap=rect] (.5,3) -- (1,3) node (IU) {}
+									 to[out=270, in=60] (.9,2.3)
+								 (0,3) |- (0.5,2) -- ++(340:.2)
+								 (.75,2.15) -- ++(340:.2);
+
+% plenum
+\draw[semithick] (1,2.8) -- (2,2.8) -- (3,2.5)
+	  (.25,2) |- (2,1) -- (3,1.3);
+
+% join
+\filldraw[semithick] (3,2.5) rectangle (3.2,1.3);
+
+% duct
+\draw[semithick, gray] (3.2,2.5) arc (90:20:2.2) -- ++(290:1.5)
+	arc(200:270:1) node (N0) {} -- ++(1.2,0) node (N1) {};
+\draw[semithick, gray] (3.2,1.3) arc (90:20:1) -- coordinate (C1)
+	++(290:1.5) arc (200:270:2.2) -- ++(1.2,0) node (N2) {};
+\draw[gray] foreach \theta in {20, 30, ..., 90}{
+				(3.2,.3)++(\theta:1) -- ++(\theta:1.2)}
+            foreach \x in {0.3, 0.6, ..., 1.5}{
+            		(3.2,.3)++(20:1)++(290:\x) -- ++(20:1.2)}
+            foreach \theta in {200, 210, ..., 270}{
+            		(N0)++(0,1)++(\theta:1)    -- ++(\theta:1.2)}
+            foreach \x in {0.3, 0.6, 0.9}{
+            		(N0)++(\x,0) -- ++(0,-1.2)};
+
+% join
+\filldraw[thick] (N1)++(.2,0) rectangle (N2);
+
+% fan casing
+\draw[thick] (N1)++(.2,0) arc (270:360:.1) |- node (D1) {} ++(.7,.2)
+		-- ++(0,-.3) node (P1) {}
+			 (N2)++(.2,0) arc (90:0:.1)    |- ++(.7,-.2) node (D2) {}
+		-- ++(0,.3) node (P2) {};
+
+\draw foreach \y in {-.45,-.3,...,.45}{
+	($(P1)!0.5!(P2)-(.05,\y)$) -- ++(.1,0) };
+
+% fan
+\path ($(D1)!0.5!(D2)$) pic [rotate=90, thick] {fan2=2} node[dot] (F) {};
+
+% outlet air flux
+\draw[line width=1mm, -{Triangle[scale=0.7]}, col] ($(P1)!0.5!(P2)+(.2,0)$) -- ++(.7,0);
+
+% labels
+\draw[gray, semithick] (IU)++(45:3pt) -- ++(45:.7) -- ++(.7,0)
+	node[anchor=mid west, inner sep=3pt] {unité intérieure};
+
+\draw[gray, semithick] (D1.north -| F)++(0,3pt) -- ++(0,1)
+	node[above, inner sep=3pt] {duct blaster};
+
+\draw[gray, semithick] (C1)++(200:3pt) -- ++(200:.7) -- ++(-.7,0)
+	node[anchor=mid east, inner sep=3pt] {conduit flexible};
+
+\end{scope}
+
+\end{slide}
+
+
+\setlength{\templen}{7\baselineskip}
+
+\begin{slide}[Les capacités totales sont plus facilement calculées\\
+			  avec les propriétés du réfrigérant]
+
+
+\begin{scope}[shift={(p5cl cs:0,4)}, visible on=<{1,4-5}>]
+
+% four-way valve 
+\coordinate[circle, draw, thick, minimum size=7mm]
+	(4wValve) at (\templen, 0.5\templen) {};
+
+% compressor
+\coordinate[compressor, draw, thick, minimum size=7mm,
+			right=\bigcol-\templen of 4wValve.center, anchor=center]
+	(comp);
+
+% indoor unit HX
+\draw[thick, HX] (0.5\templen-5mm,\templen) node(iuOut){} -- ++(1,0)
+	node(iuIn){};
+
+% expansion valve
+\coordinate[expValve] (v) at (0,0.5\templen) {};
+
+% outdoor unit HX
+\draw[HX, thick] (0.5\templen-5mm,0) node(ouIn){} -- ++(1,0)
+	node(ouOut){};
+
+% refrigerant lines, heating
+\begin{scope}[visible on=<{1,4}>]
+
+\draw[thick, midarrow=.75-latex, col!50]
+	(ouOut.center) -| coordinate (6h) (4wValve.225);
+\coordinate (C0) at ($(4wValve.225)!0.5!(ouOut)$);
+\draw[thick, col!50, line cap=rect]
+	(4wValve.225)++(0,-.1) -- (4wValve.225)
+	arc (135:45:3.5mm) -- (C0 -| 4wValve.315) coordinate (C1);
+\draw[thick, midarrow=.4-latex, col!50]
+	(C1) -| coordinate (1) (comp.south);
+\coordinate (C2) at ($(4wValve.45)!0.5!(iuIn)$);
+\draw[thick, midarrow=.5-latex, col]
+	(comp.north) |- coordinate (2) (4wValve.135 |- C2) -- (4wValve.135);
+\draw[thick, col] (4wValve.135)++(0,.1) -- ++(0,-.1) arc (225:315:3.5mm)
+	coordinate (C3) -- ($(2 -| C3)-(0,.05)$) ++(0,.1) coordinate (C4);
+\draw[thick, midarrow=.75-latex, col]
+	(C4) |- coordinate (3) (iuIn.center);
+\draw[thick, midarrow=.8-latex, gray]
+	(iuOut.center) -| coordinate (4) (v.north);
+\draw[thick, midarrow=.85-latex, gray!50]
+	(v.south) |- coordinate (5h) (ouIn.center);
+
+\end{scope}
+
+% refrigerant lines, cooling
+\begin{scope}[visible on=<5>]
+
+\coordinate (C0) at ($(4wValve.225)!0.5!(ouOut)$);
+\coordinate (C2) at ($(4wValve.45)!0.5!(iuIn)$);
+\draw[thick, midarrow=.5-latex, col]
+	(comp.north) |- coordinate (2) (4wValve.135 |- C2) -- (4wValve.135);
+\draw[thick, col, midarrow=.53-latex] (4wValve.135)++(0,.1) -- ++(0,-.1)
+	arc (45:-45:3.5mm) |- coordinate (6) (ouOut.center);
+\draw[thick, midarrow=.8-latex, gray]
+	(ouIn.center) -| coordinate (5) (v.south);
+\draw[thick, midarrow=.85-latex, gray!50]
+	(v.north) |- coordinate (4c) (iuOut.center);
+\draw[thick, midarrow=.3-latex, col!50] (iuIn.center) -| coordinate (3c)
+	($(C2 -| 4wValve.45)+(0,.05)$) ++(0,-.1) -- (4wValve.45);
+\draw[thick, col!50, line cap=rect] (4wValve.45)++(0,.1) -- ++(0,-.1)
+	arc (135:225:3.5mm) -- (C0 -| 4wValve.315) coordinate (C1);
+\draw[thick, col!50, midarrow=.4-latex] (C1) -| coordinate (1) (comp.south);
+
+\end{scope}
+
+% re-draw valve to avoid overlap
+\node[expValve, thick] at (v) {};
+
+\tikzset{inner sep=3pt, font=\scriptsize}
+% refrigerant states
+\foreach \sensor/\lab/\pos in {1/1/below right, 2/2/above right,
+							   3/3/above right, 4/4/above left,
+							   5h/5/below left, 6h/6/below right}{
+	\node[dot, label=\pos:\lab] at (\sensor) {};}
+
+\end{scope}
+
+
+\node[anchor=base west, visible on=<{2-3,6}>,
+	  background text=gray, text on=<{3,6}>] at (t5cl cs:0,9)
+	{$ \Pcp = \mr(h_2 - h_1) $};
+\node[anchor=base west, visible on=<{3,6}>,
+	  background text=gray, text on=<6>] at (t5cl cs:0,7)
+	{$ \Qh = \mr(h_3 - h_4) + \Pfi $};
+\node[anchor=base west, visible on=<6>] at (t5cl cs:0,5)
+	{$ \Qc = \mr(h_3 - h_4) - \Pfi $};
+
+
+\begin{scope}[shift={(p5cl cs:3,5)}, x=\bigcol/5,
+			  y=4\baselineskip/1.7183, xshift=.1\bigcol]
+
+\tikzset{inner sep=3pt, font=\scriptsize}
+
+\coordinate (LVEbottom) at (2.4,-\baselineskip);
+\fill[gray!20] (-.5,-\baselineskip) to [out=65, in=220] (1,2.65)
+	to [out=40,in=180] (1.6,2.8) coordinate (SC)
+	to [out=0, in=80] coordinate[pos=0.3] (LVE) (LVEbottom);
+\only<1>{
+	\node[gray, align=left, font=\scriptsize, anchor=base east]
+		(LVElab) at (t5cr cs:4,12) {Équilibre\\liquide-vapeur};
+	\draw[gray] (LVElab.base -| LVElab.230)++(0,-3pt) -- ++(0,-.4)
+		coordinate (C1) -- ($(C1)!0.8!(LVE)$);}
+
+\draw[midarrow=0.55-latex, hl=draw on <6>]
+	(0,0) coordinate[dot, hl=fill on <6>] (evi) --
+	(2.6,0) coordinate[dot, hl=fill on <6>] (evo);
+\draw (evo) -- (3,0) coordinate (cpi);
+\draw[midarrow=0.55-latex, hl=draw on <2>]
+	(cpi) node[dot, hl=fill on <2>] {} --
+	plot[domain=3:4.5] (\x, {exp(\x/1.5-2) - 1})
+	coordinate[dot, hl=fill on <2>] (cpo);
+\draw (cpo) -- ++(-.5,0) coordinate[dot, hl=fill on <3>] (cdi);
+\draw[midarrow=0.5-latex, hl=draw on <3>] (cdi) -- (cpo -| evi)
+	coordinate[dot, hl=fill on <3>] (cdo) {};
+\draw[midarrow=0.55-latex] (cdo) -- (evi);
+
+\node [below right, background text=col, text on=<2>] at (cpi) {1};
+\node [above right, background text=col, text on=<2>] at (cpo) {2};
+\node [above, background text=col, text on=<3>] at (cdi)
+	{\temporal<4>{3}{3}{6}};
+\node [above left, background text=col, text on=<3>] at (cdo)
+	{\temporal<4>{4}{4}{5}};
+\node [below left, background text=col, text on=<6>] at (evi)
+	{\temporal<4>{5}{5}{4}};
+\node[below, background text=col, text on=<6>] at (evo)
+	{\temporal<4>{6}{6}{3}};
+
+
+% axes
+\draw[semithick, hlb=draw on <{3,6}>]
+	(0,-8\quanta) node[below, hlb=text on <{3,6}>] {$ h_4 $}
+	++(-.3pt,0) -- (2.6,-8\quanta) -- ++(.3pt,0);
+\draw[semithick, hlb=draw on <3>] (2.6,-8\quanta)
+	node[below, hlb=text on <6>] {$ h_{\temporal<4>{6}{6}{3}} $}
+	++(.3pt,0) -- ($(3,-8\quanta)-(.3pt,0)$);
+\draw[semithick, hlb=draw on <{2,3}>]
+	(3,-8\quanta) node[below, hlb=text on <2>] {$ h_1 $}
+	++(-.3pt,0) -- (4,-8\quanta) -- ++(.3pt,0);
+\draw[semithick, hlb=draw on <2>] (4,-8\quanta)
+	node[below, hlb=text on <3>] {$ h_{\temporal<4>{3}{3}{6}} $}
+	++(.3pt,0) -- (4.5,-8\quanta) node[below, hlb=text on <2>] {$ h_2 $}
+	-- ++(.3pt,0);
+\draw[semithick, hlb=draw on <{3,6}>]
+	(0,-8\quanta)++(0,.3pt) -- (0,-7\quanta);
+\draw[semithick, hlb=draw on <6>]
+	(2.6,-8\quanta)++(0,.3pt) -- (2.6,-7\quanta);
+\draw[semithick, hlb=draw on <2>]
+	(3,-8\quanta)++(0,.3pt) -- (3,-7\quanta);
+\draw[semithick, hlb=draw on <3>]
+	(4,-8\quanta)++(0,.3pt) -- (4,-7\quanta);
+\draw[semithick, hlb=draw on <2>]
+	(4.5,-8\quanta)++(0,.3pt) -- (4.5,-7\quanta);
+
+\draw[gray, semithick]
+	(-7\quanta,0) -| node[left] {$ p_{\temporal<4>{5}{5}{4}} = p_1 $}
+	(-8\quanta,1.7183) node[left] {$ p_{\temporal<4>{4}{4}{5}} = p_2 $}
+	-- +(\quantum,0);
+
+\end{scope}
+
+\end{slide}
+
+
+
