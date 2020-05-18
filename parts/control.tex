@@ -1,0 +1,246 @@
+% MAP: PID
+\begin{slide}
+
+\begin{scope}[shift={(p5cl cs:0,13)}, node distance=5mm,
+			  font=\footnotesize, inner sep=3pt]
+
+\node[anchor=west] (Tset) at (.1,0) {$ T_\text{set} $};
+\node[right=of Tset, sum] (sum1) {$ \sum $};
+\coordinate[dot, right=1cm of sum1] (N1);
+
+\node[block, anchor=north west] (ki) at ($(N1)+(.4,-1cm)$)
+	{$ \dfrac{k_p}{\tau_i} $};
+\node[right=1cm of ki, block] (I) {$ \dfrac{1}{s} $};
+
+\coordinate (C1) at ($(I.east)+(.3,0)$);
+\node[sum] (sum3) at (C1 |- N1) {$\sum$};
+\node[block] (kp) at ($(N1)!0.5!(sum3)$) {$ k_p $};
+\coordinate[right=1cm of sum3] (N2) {};
+
+\node[block, below=25mm of kp, inner sep=5pt] (sys) {system};
+\node[block, inner sep=5pt] (opp2) at (sys -| sum1) {$ -1 $};
+
+\foreach \start/\stop in {Tset/sum1, sum1/N1, N1/kp, kp/sum3,
+						  ki/I, sys/opp2, opp2/sum1}{
+	\draw[-latex] (\start) -- (\stop);}
+\draw[-latex] (N1) |- (ki);
+\draw[-latex] (I)  -| (sum3);
+\draw[-latex] (sum3) -- (N2) |- (sys);
+
+% labels
+\node[above] at (N1) {$ e $};
+\node[fill=white]
+	at ($(opp2)!0.5!(sum1)$) {$ \,-\Tr\phantom{-} $};
+\node[fill=white] at ($(sys)!0.5!(sys -| opp2)$) {\Tr};
+\node[fill=white] at ($(N2)!0.5!(N2 |- sys)$) {$ \hat\fc $};
+
+	  
+\end{scope}
+
+
+\end{slide}
+
+
+
+
+
+% MAP: operation mode
+\begin{slide}
+
+\begin{scope}[shift={(p5cl cs:0,13)}, node distance=5mm,
+			  font=\footnotesize, inner sep=3pt]
+
+\node[anchor=west] (Tset) at (.1,0) {$ T_\text{set} $};
+\node[right=of Tset, sum] (sum1) {$ \sum $};
+\node[right=5mm of sum1, block, fill=col!50] (mode) {$ \gamma $};
+\coordinate[dot, right=5mm of mode] (N1);
+
+\node[block, anchor=north west] (ki) at ($(N1)+(.4,-1cm)$)
+	{$ \dfrac{k_p}{\tau_i} $};
+\node[right=1cm of ki, block] (I) {$ \dfrac{1}{s} $};
+
+\coordinate (C1) at ($(I.east)+(.3,0)$);
+\node[sum] (sum3) at (C1 |- N1) {$\sum$};
+\node[block] (kp) at ($(N1)!0.5!(sum3)$) {$ k_p $};
+\coordinate[right=1cm of sum3] (N2) {};
+
+\node[block, below=25mm of kp, inner sep=5pt] (sys) {system};
+\node[block, inner sep=5pt] (opp2) at (sys -| sum1) {$ -1 $};
+
+\foreach \start/\stop in {Tset/sum1, sum1/mode, mode/N1, N1/kp, kp/sum3,
+						  ki/I, sys/opp2, opp2/sum1}{
+	\draw[-latex] (\start) -- (\stop);}
+\draw[-latex] (N1) |- (ki);
+\draw[-latex] (I)  -| (sum3);
+\draw[-latex] (sum3) -- (N2) |- (sys);
+
+% labels
+\node[above, col] at (N1) {$ \gamma e $};
+\node[fill=white]
+	at ($(opp2)!0.5!(sum1)$) {$ \,-\Tr\phantom{-} $};
+\node[fill=white] at ($(sys)!0.5!(sys -| opp2)$) {\Tr};
+\node[fill=white] at ($(N2)!0.5!(N2 |- sys)$) {$ \hat\fc $};
+
+	  
+\end{scope}
+
+
+\end{slide}
+
+
+
+
+
+% MAP: frequency limits & quantization
+\begin{slide}
+
+\begin{scope}[shift={(p5cl cs:0,13)}, node distance=5mm,
+			  font=\footnotesize, inner sep=3pt]
+
+\node[anchor=west] (Tset) at (.1,0) {$ T_\text{set} $};
+\node[right=of Tset, sum] (sum1) {$ \sum $};
+\node[right=5mm of sum1, block] (mode) {$ \gamma $};
+\coordinate[dot, right=5mm of mode] (N1);
+
+\node[block, anchor=north west] (ki) at ($(N1)+(.4,-1cm)$)
+	{$ \dfrac{k_p}{\tau_i} $};
+\node[right=of ki, sum, fill=col!50, visible on=<2>] (sum2) {$ \sum $};
+\node[right=of sum2, block, hlbg=fill on <2>] (I) {$ \dfrac{1}{s} $};
+
+\node[block] (kp) at (N1 -| sum2) {$ k_p $};
+\coordinate (C1) at ($(I.east)+(.3,0)$);
+\node[sum] (sum3) at (C1 |- kp) {$\sum$};
+\coordinate[dot, right=10mm of sum3] (N2) {};
+
+% saturation block
+\node[block, right=11mm of N2, minimum width=1cm, minimum height=1cm,
+	  hlbg=fill on <1>] (sat) {};
+\draw (sat.south west)++(.2,.2) -- ++(.2,0) -- ($(sat.north east)-(.4,.2)$)
+	  -- ++(.2,0);
+
+% quantizer
+\node[block, below=of sat, minimum width=1cm, minimum height=1cm,
+	  hlbg=fill on <1>] (qt) {};
+\draw[col, thick] (qt.south west)++(.2,.2) cos ++(.03,.1) sin ++(.12,.45)
+					cos ++(.15,-.15) sin ++(.3,-.2);
+\draw (qt.south west)++(.2,.2) |- ++(.1,.2) |- ++(.1,.4) |- ++(.3,-.2)
+	  |- ++(.1,-.3);
+
+\node[block, inner sep=5pt, fill=col!50, visible on=<2>] (opp)
+	at (N2 |- I) {$ -1 $};
+\node[sum, below=1cm of opp, fill=col!50, visible on=<2>] (sum4)
+	{$ \sum $};
+\coordinate[dot] (N3) at (sum4 -| qt) {};
+\node[block, fill=col!50, visible on=<2>] (kt)
+	at (sum4 -| I) {$ \dfrac{1}{\tau_t} $};
+
+\node[block, below=1cm of kt, inner sep=5pt] (sys) {system};
+\node[block, inner sep=5pt] (opp2) at (kt -| sum1) {$ -1 $};
+
+\foreach \start/\stop in {Tset/sum1, sum1/mode, mode/N1, N1/kp, kp/sum3,
+						  sum3/N2, N2/sat, sat/qt, qt/N3, opp2/sum1}{
+	\draw[-latex] (\start) -- (\stop);}
+\foreach \start/\stop in {N3/sum4, N2/opp, opp/sum4, sum4/kt,
+						  ki/sum2, sum2/I}{
+	\draw[-latex, draw on=<2>] (\start) -- (\stop);}
+\draw[-latex, visible on=<1>] (ki) -- (I);
+\draw[-latex] (N1) |- (ki);
+\draw[-latex] (I)  -| (sum3);
+\draw[-latex, draw on=<2>] (kt) -| (sum2);
+\draw[-latex] (N3) |- (sys);
+\draw[-latex] (sys) -| (opp2);
+
+% labels
+\node[above] at (N1) {$ \gamma e $};
+\node[fill=white] at ($(opp2)!0.5!(sum1)$) {$ \,-\Tr\phantom{-} $};
+\node[fill=white] at ($(sys.west)!0.5!(sys -| opp2)$) {\Tr};
+\node[above] at (N2) {$ \hat\fc $};
+\node[right] at (N3) {\fc};
+
+
+\end{scope}
+
+\end{slide}
+
+
+
+
+
+% MAP: whole controller
+\begin{slide}
+
+\begin{scope}[shift={(p5cl cs:0,13)}, node distance=5mm,
+			  font=\footnotesize, inner sep=3pt]
+
+\node[anchor=west] (Tset) at (.1,0) {$ T_\text{set} $};
+\node[right=of Tset, sum] (sum1) {$ \sum $};
+\node[right=5mm of sum1, block] (mode) {$ \gamma $};
+\coordinate[dot, right=5mm of mode] (N1);
+
+\node[block, anchor=north west] (ki) at ($(N1)+(.4,-1cm)$)
+	{$ \dfrac{k_p}{\tau_i} $};
+\node[right=of ki, sum] (sum2) {$ \sum $};
+\node[right=of sum2, block] (I) {$ \dfrac{1}{s} $};
+
+\node[block] (kp) at (N1 -| sum2) {$ k_p $};
+\coordinate (C1) at ($(I.east)+(.3,0)$);
+\node[sum] (sum3) at (C1 |- kp) {$\sum$};
+\coordinate[dot, right=10mm of sum3] (N2) {};
+
+% saturation block
+\node[block, right=11mm of N2, minimum width=1cm, minimum height=1cm]
+	(sat) {};
+\draw (sat.south west)++(.2,.2) -- ++(.2,0) -- ($(sat.north east)-(.4,.2)$)
+	  -- ++(.2,0);
+
+% quantizer
+\node[block, below=of sat, minimum width=1cm, minimum height=1cm] (qt) {};
+\draw[col, thick] (qt.south west)++(.2,.2) cos ++(.03,.1) sin ++(.12,.45)
+					cos ++(.15,-.15) sin ++(.3,-.2);
+\draw (qt.south west)++(.2,.2) |- ++(.1,.2) |- ++(.1,.4) |- ++(.3,-.2)
+	  |- ++(.1,-.3);
+
+\node[block, inner sep=5pt] (opp) at (N2 |- I) {$ -1 $};
+\node[sum, below=1cm of opp] (sum4) {$ \sum $};
+\coordinate[dot] (N3) at (sum4 -| qt) {};
+\node[block] (kt) at (sum4 -| I) {$ \dfrac{1}{\tau_t} $};
+
+\node[block, below=1cm of kt, inner sep=5pt] (sys) {system};
+\node[block, inner sep=5pt] (opp2) at (kt -| sum1) {$ -1 $};
+
+\foreach \start/\stop in {Tset/sum1, sum1/mode, mode/N1, N1/kp, kp/sum3,
+						  sum3/N2, N2/sat, sat/qt, qt/N3, N3/sum4,
+						  N2/opp, opp/sum4, sum4/kt,
+						  ki/sum2, sum2/I, opp2/sum1}{
+	\draw[-latex] (\start) -- (\stop);}
+\draw[-latex] (N1) |- (ki);
+\draw[-latex] (I)  -| (sum3);
+\draw[-latex] (kt) -| (sum2);
+\draw[-latex] (N3) |- (sys);
+\draw[-latex] (sys) -| (opp2);
+
+% labels
+\node[above] at (N1) {$ \gamma e $};
+\node[fill=gray!10]
+	at ($(opp2)!0.5!(sum1)$) {$ \,-\Tr\phantom{-} $};
+\node[fill=white] at ($(sys.west)!0.5!(sys -| opp2)$) {\Tr};
+\node[above] at (N2) {$ \hat\fc $};
+\node[right] at (N3) {\fc};
+
+% components
+\begin{scope}[on background layer]
+
+\node[fill=gray, opacity=0.1, rounded corners,
+	  fit=(Tset) (sum1) (sum3) (ki) (I)] (PI) {};
+\node[fill=gray, opacity=0.1, rounded corners,
+	  fit=(opp) (sum4) (kt) (sum2) (I)] (anti-windup) {};
+	  
+\end{scope}
+
+%\node[gray, anchor=south west] at (PI.north west) {PI block};
+%\node[gray, anchor=north west, align=left] at (anti-windup.north east)
+%	{anti-\\windup};
+
+\end{scope}
+
+\end{slide}
