@@ -40,8 +40,9 @@
 \newlength\ssMheight
 \settoheight{\ssMheight}{\scriptsize M}
 
-% temporary length to locally replace long length calculations
+% temporary lengths to locally replace long length calculations
 \newlength\templen
+\newlength\buffer
 
 %% lists stuff
 \newenvironment{listed}{
@@ -99,7 +100,7 @@
 		\node (SE) at (page cs:60,-45) {};
 		\node (C) at (page cs:0,0) {};
 		
-		\node[anchor=north west, align=left, font=\Large,
+		\node[anchor=north west, align=left, font=\Large, black!60!gray,
 			  yshift=\Largeydepth+.95pt, xshift=-.95pt] (title)
 			at (page cs:-52,37) {#1};
 			
@@ -172,7 +173,7 @@
 %% Quantities
 \newcommand{\xmath}[1]{\ensuremath{#1}\xspace}  % ensure math mode
 
-\newcommand{\Qh}{\xmath{\skew{5}\dot Q_\text{h}}}
+\newcommand{\Qh}[1][]{\xmath{\skew{5}\dot Q_{\text{h}#1}}}
 \newcommand{\Qc}{\xmath{\skew{5}\dot Q_\text{c}}}
 \newcommand{\Qcs}{\xmath{\skew{5}\dot Q_\text{cs}}}
 \newcommand{\Qcl}{\xmath{\skew{5}\dot Q_\text{cl}}}
@@ -185,6 +186,11 @@
 \newcommand{\Twbr}[1][]{\xmath{T_{{\text{wb}r#1}}}}
 \newcommand{\Ts}{\xmath{T_s}}
 \newcommand{\To}[1][]{\xmath{T_{o#1}}}
+\newcommand{\Tset}{\xmath{T_\text{set}}}
 \newcommand{\dTr}{\xmath{\Delta T_r}}
 \newcommand{\mr}{\xmath{\skew{5}\dot m_\text{r}}}
 \newcommand{\ma}[1][]{\xmath{\skew{5}\dot m_{\text{a}#1}}}
+\newcommand{\tdf}{\xmath{\tau_\text{df}}}
+\newcommand{\trec}{\xmath{\tau_\text{rec}}}
+\newcommand{\tss}{\xmath{\tau_\text{ss}}}
+\newcommand{\theat}{\xmath{\tau_\text{h}}}

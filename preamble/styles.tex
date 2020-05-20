@@ -1,7 +1,8 @@
 \tikzstyle{becomes} = [triangle, col!50, minimum width=4\quanta,
 					   minimum height=2\quanta, fill]
-
 \tikzstyle{dot} = [circle, fill, scale=.3, inner sep=3pt]
+\tikzstyle{sum} = [circle, fill=gray!50, inner sep=3pt]
+\tikzstyle{block} = [rectangle, fill=gray!50, inner sep=5pt]
 
 \tikzset{
 	fan/.pic={
@@ -26,17 +27,20 @@
 \tikzstyle{expValve} = [hourglass, draw,
 						minimum height=4mm, minimum width=2mm]
 
-
-\tikzset{onslide/.code args={<#1>#2}{
- 	\only<#1>{\pgfkeysalso{#2}} 
-}}
-
 \tikzset{
 	hl/.style args={#1 on #2}{
 		background default #1=black,
 		background #1=col,
 		#1 on=#2},
+	hlg/.style args={#1 on #2}{
+		background default #1=gray!50,
+		background #1=col,
+		#1 on=#2},
 	hlb/.style args={#1 on #2}{
 		background default #1=gray,
 		background #1=black,
+		#1 on=#2},
+	hlbg/.style args={#1 on #2}{
+		background default #1=gray!50,
+		background #1=col!50,
 		#1 on=#2}}
