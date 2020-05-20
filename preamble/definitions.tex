@@ -40,8 +40,9 @@
 \newlength\ssMheight
 \settoheight{\ssMheight}{\scriptsize M}
 
-% temporary length to locally replace long length calculations
+% temporary lengths to locally replace long length calculations
 \newlength\templen
+\newlength\buffer
 
 %% lists stuff
 \newenvironment{listed}{
@@ -185,6 +186,7 @@
 \newcommand{\Twbr}[1][]{\xmath{T_{{\text{wb}r#1}}}}
 \newcommand{\Ts}{\xmath{T_s}}
 \newcommand{\To}[1][]{\xmath{T_{o#1}}}
+\newcommand{\Tset}{\xmath{T_\text{set}}}
 \newcommand{\dTr}{\xmath{\Delta T_r}}
 \newcommand{\mr}{\xmath{\skew{5}\dot m_\text{r}}}
 \newcommand{\ma}[1][]{\xmath{\skew{5}\dot m_{\text{a}#1}}}

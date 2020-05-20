@@ -44,7 +44,44 @@
 
 
 
-% MAP: operation mode
+% operating mode
+\begin{slide}[Le mode d'opération est sélectionné selon\\
+			  la valeur de l'erreur et une bande morte $ 2\delta $]
+
+%\drawhelplines
+
+\begin{scope}[shift={(p5cl cs:2,7)}, inner sep=3pt,
+			  x=\colv, y=\baselineskip]
+
+\draw [midarrow=.83-latex, thick] (0,0) -| (.8,3);
+\draw [midarrow=.83-latex, thick] (1,3)  -| (.2,0);
+
+\draw [gray] (.2,-.75) -- (.2,-1) node [below] {$ -\delta\phantom{-} $}
+						-| node [below] (d) {$ \delta $} (.8,-.75);
+						
+\node [right=6mm of d.base, anchor=base west] {$ e = \Tset - \Tr $};
+
+
+\node [gray, inner sep=0pt, anchor=east, visible on=<1>]
+	at (-\baselineskip,3) {heating};
+\node [gray, inner sep=0pt, anchor=east, visible on=<1>]
+	at (-\baselineskip,0) {cooling};
+
+\draw [gray, visible on=<2>] (-\baselineskip, 0)++(\quantum,0) --
+	(-\baselineskip,0) node [left] {$ -1 $} |-
+	node [left] (g) {1} ++(\quantum,3);
+	
+\node [above=2mm of g, visible on=<2>] {$ \gamma $};
+
+\end{scope}
+
+\end{slide}
+
+
+
+
+
+% MAP: operating mode
 \begin{slide}
 
 \begin{scope}[shift={(p5cl cs:0,13)}, node distance=5mm,
@@ -81,7 +118,189 @@
 \node[fill=white] at ($(sys)!0.5!(sys -| opp2)$) {\Tr};
 \node[fill=white] at ($(N2)!0.5!(N2 |- sys)$) {$ \hat\fc $};
 
-	  
+\end{scope}
+
+
+\end{slide}
+
+
+
+
+
+% frequency limits
+\begin{slide}[La fréquence est confinée dans un intervalle\only<2>{,\\}
+			  \only<2>{et quantifiée sur des valeurs discrètes}]
+
+\setlength\templen{\dimexpr\colvsep/2-5mm\relax}
+\setlength\buffer{%
+	\dimexpr0.5\colvsep-0.125\baselineskip - 0.25\templen\relax}
+
+% saturation
+\begin{scope}[visible on=<1>]
+
+% saturation block
+\node [block, minimum width=1cm, minimum height=1cm] (sat)
+	at ($(p5cl cs:2,9)+(\colv/2,0)$) {};
+\draw (sat.south west)++(.2,.2) -- ++(.2,0) -- ($(sat.north east)-(.4,.2)$)
+	  -- ++(.2,0);
+\coordinate [right=1cm of sat.east] (C4);
+
+% signals
+\begin{scope}[shift={(p5cl cs:0,9)}, x=\buffer]
+
+% unsaturated signal
+\draw[col, very thick, shorten >=-.2pt] plot[samples=100, domain=0:2]
+	(\x, {0.5*sin(600*(\x-.02)) * exp(-2*\x)}) coordinate (C1);
+
+\begin{scope}[xshift=2\buffer, yshift=-5mm]
+	\draw[col, very thick, shorten <=-.6pt] plot[samples=100, domain=0:2]
+		(\x, {0.5*cos(600*(\x)) * exp(-2*\x)}) coordinate (C2);
+\end{scope}
+
+
+\node [becomes, rotate=-90] (B1) at ($(sat.west)-(\templen,0)$) {};
+\node [becomes, rotate=-90] (B2) at ($(sat.east)+(\templen,0)$) {};
+
+
+% saturated signal
+\begin{scope}[xshift=\bigcol+\colvsep+2\quanta+\templen]
+
+\draw [gray!50, very thick] plot[samples=50, domain=.05:.28]
+	(\x, {0.5*sin(600*(\x-.02)) * exp(-2*\x)});
+	
+\draw [very thick, col, shorten >=-.5pt] plot[samples=50, domain=0:.06]
+	(\x, {0.5*sin(600*(\x-.02)) * exp(-2*\x)});
+
+\draw [very thick, col, shorten <=-.2pt, shorten >=-.2pt]
+	(.05,.1804) -- (.267,.1804) coordinate (fmax);
+	
+\draw [very thick, col, shorten <=-.4pt, shorten >=-.1pt]
+	plot[samples=100, domain=.258:2]
+		(\x, {0.5*sin(600*(\x-.02)) * exp(-2*\x)});
+	
+\begin{scope}[xshift=2\buffer, yshift=-5mm]
+	\draw [gray!50, very thick] plot[samples=50, domain=.16:.42]
+		(\x, {0.5*cos(600*(\x)) * exp(-2*\x)});
+	
+	\draw [very thick, col, shorten <=-.6pt, shorten >=-.4pt]
+		plot[samples=50, domain=0:.18]
+			(\x, {0.5*cos(600*(\x)) * exp(-2*\x)});
+	
+	\draw [very thick, col, shorten <=-.2pt, shorten >=-.2pt]
+		(.17,-.10777) -- (.41,-.10777) coordinate (fmin);
+	
+	\draw [very thick, col, shorten <=-.4pt]
+		plot[samples=100, domain=.402:2]
+			(\x, {0.5*cos(600*(\x)) * exp(-2*\x)}) coordinate (C6);
+
+\end{scope}
+
+\coordinate (O);
+\coordinate (C7) at (1.7,0);
+\coordinate (fmaxl) at (C7 |- fmax);
+\coordinate (fminl) at (C7 |- fmin);
+
+\end{scope}
+
+
+\begin{scope}[on background layer]
+	\filldraw[gray!10, visible on=<1>] (fmax -| O)++(0,.4pt) rectangle
+		($(fmin -| C6)-(0,.4pt)$);
+\end{scope}
+
+\draw [latex-] (fmaxl) -- ++(0,\baselineskip);
+\draw [latex-] (fminl) -- ++(0,-\baselineskip)
+	node [below, inner sep=3pt] {\footnotesize $ \Delta f $};
+
+\end{scope}
+
+\end{scope}
+
+
+\begin{scope}[visible on=<2>]
+
+% quantization block
+\node[block, minimum width=1cm, minimum height=1cm] (qt)
+	at ($(p5cl cs:2,9)+(\colv/2,0)$) {};
+\draw[col, thick] (qt.south west)++(.2,.2) cos ++(.03,.1) sin ++(.12,.45)
+					cos ++(.15,-.15) sin ++(.3,-.2);
+\draw (qt.south west)++(.2,.2) |- ++(.1,.2) |- ++(.1,.4) |- ++(.3,-.2)
+	  |- ++(.1,-.3);
+\coordinate[right=1cm of qt.east] (C4);
+
+% signals
+\begin{scope}[shift={(p5cl cs:0,9)}, x=\buffer]
+
+% saturated signal
+\draw [gray!50, very thick] plot[samples=50, domain=.05:.28]
+	(\x, {0.5*sin(600*(\x-.02)) * exp(-2*\x)});
+	
+\draw [very thick, col, shorten >=-.5pt] plot[samples=50, domain=0:.06]
+	(\x, {0.5*sin(600*(\x-.02)) * exp(-2*\x)});
+
+\draw [very thick, col, shorten <=-.2pt, shorten >=-.2pt]
+	(.05,.1804) -- (.267,.1804) coordinate (fmax);
+	
+\draw [very thick, col, shorten <=-.4pt, shorten >=-.1pt]
+	plot[samples=100, domain=.258:2]
+		(\x, {0.5*sin(600*(\x-.02)) * exp(-2*\x)});
+	
+\begin{scope}[xshift=2\buffer, yshift=-5mm]
+	\draw [gray!50, very thick] plot[samples=50, domain=.16:.42]
+		(\x, {0.5*cos(600*(\x)) * exp(-2*\x)});
+	
+	\draw [very thick, col, shorten <=-.6pt, shorten >=-.4pt]
+		plot[samples=50, domain=0:.18]
+			(\x, {0.5*cos(600*(\x)) * exp(-2*\x)});
+	
+	\draw [very thick, col, shorten <=-.2pt, shorten >=-.2pt]
+		(.17,-.10777) -- (.41,-.10777) coordinate (fmin);
+	
+	\draw [very thick, col, shorten <=-.4pt]
+		plot[samples=100, domain=.402:2]
+			(\x, {0.5*cos(600*(\x)) * exp(-2*\x)}) coordinate (C6);
+
+\end{scope}
+
+
+\node [becomes, rotate=-90] (B1) at ($(qt.west)-(\templen,0)$) {};
+\node [becomes, rotate=-90] (B2) at ($(qt.east)+(\templen,0)$) {};
+
+
+% quantized signal
+\begin{scope}[xshift=\bigcol+\colvsep+2\quanta+\templen]
+
+\draw [very thick, gray!50, shorten >=-.3pt]
+	plot[samples=50, domain=0:.06]
+		(\x, {0.5*sin(600*(\x-.02)) * exp(-2*\x)});
+
+\draw [very thick, gray!50] (.05,.1804) -- (.267,.1804);
+	
+\draw[very thick, gray!50, shorten <=-.3pt]
+	plot[samples=100, domain=.258:2]
+		(\x, {0.5*sin(600*(\x-.02)) * exp(-2*\x)}) coordinate (C1);
+	
+\begin{scope}[xshift=2\buffer, yshift=-5mm]
+	
+	\draw [very thick, gray!50, shorten <=-.5pt, shorten >=-.3pt]
+		plot[samples=50, domain=0:.18]
+			(\x, {0.5*cos(600*(\x)) * exp(-2*\x)});
+	
+	\draw [very thick, gray!50] (.17,-.10777) -- (.41,-.10777);
+	
+	\draw [very thick, gray!50, shorten <=-.3pt]
+		plot[samples=100, domain=.402:2]
+			(\x, {0.5*cos(600*(\x)) * exp(-2*\x)}) coordinate (C2);
+\end{scope}
+
+\draw [col, very thick] (0,-.1) |- (.2,.1804) |- (.4, .05) |- (.6, -.2)
+	|- (.8,.1) |- (1,0) |- (1.2,-.1) |- (1.4,.05) |- (2,0) |- (2.2,-.3)
+	|- (2.4,-.6078) |- (2.8,-.4) |- (3,-.55) |- (3.2,-.45) |- (4,-.5);
+
+\end{scope}
+
+\end{scope}
+
 \end{scope}
 
 
