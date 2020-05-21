@@ -130,6 +130,109 @@
 
 
 
+% separation of variables
+\begin{slide}[Pour diminuer le nombre de conditions à mesurer,\\
+			  la fréquence et l'humidité sont découplées du reste]
+
+\node [anchor=base west, gray] at (t5cl cs:0,11)
+	{Chauffage};
+\node (E1) [anchor=base west] at (t5cr cs:1,11)
+	{$ \Pel(\Tr, \To, \Va, \nu) = P(\Tr, \To, \Va) \,\, \nph2(\nu) $};
+\node [anchor=base west] at (t5cr cs:1,9)
+	{$ \Qh(\Tr, \To, \Va, \nu) = \Qca(\Tr, \To, \Va) \,\, \nph1(\nu) $};
+
+\node [anchor=base west, gray] at (t5cl cs:0,6)
+	{Climatisation};
+\node [anchor=base west] at (t5cr cs:1,6)
+	{$ \Pel(\Tr, \To, \Va, \nu) = P(\Tr, \To, \Va) \,\,
+		\npc2(\nu) $};
+\node [anchor=base west] at (t5cr cs:1,4)
+	{$ \Qc(\Tr, \To, \Va, \nu) = \Qca(\Tr, \To, \Va) \,\,
+		\npc1(\nu) $};
+\node [anchor=base west] at (t5cr cs:1,2)
+	{$ \dfrac{\Qcs}{\Qc} = \text{SHR}(\Tr, \Twbr) $};
+
+\tikzset{inner sep=3pt}
+\node (nf) [anchor=base, font=\footnotesize, gray]
+	at (t5cr cs:2,13) {fréquence normalisée};
+\draw [gray] (nf.south) -- (p5cr cs:2,12);
+
+\end{slide}
+
+
+
+
+
+% total capacity independent from humidity
+\begin{slide}[L'humidité a peu d'impact sur les performances]
+
+\begin{groupplot}[group style={group size=1 by 3,},
+				  width=\bigcol+\colv,
+				  xmin=0, xmax=3,
+				  clip=false,
+				  plot options,]
+\nextgroupplot[
+	height=2\baselineskip,
+	axis x line=none,
+	ymin=3.5, ymax=3.8,
+	ytick={3.5, 3.8},
+	yticklabels={3.5,\SI{3.8}{\kilo\watt}},
+	at={(p5cl cs:2,12)},
+	anchor=south west,
+	]
+\addplot [thick, gray] table [x=TIME, y=Qc-exp] {data/cooling-io.tsv};
+\addplot [thick,  col] table [x=TIME, y=Qc-sim] {data/cooling-io.tsv};
+\draw [latex-] (axis cs:1.7, 3.76) |- ++(3\quanta, 4\quanta)
+	node[right, inner sep=3pt] {\footnotesize \SI{6.5}{\percent} error};
+\draw [latex-] (axis cs:1.7, 3.5148) |- ++(0mm, -4\quanta);
+
+\nextgroupplot[
+	height=2\baselineskip,
+	axis x line=none,
+	ymin=0.84, ymax=0.94,
+	ytick={0.84, 0.94},
+	yticklabels={840,\SI{940}{\watt}},
+	at={(p5cl cs:2,7)},
+	anchor=south west,
+	]
+\addplot [thick, gray] table [x=TIME, y=Pel-exp] {data/cooling-io.tsv};
+\addplot [thick, col] table [x=TIME, y=Pel-sim] {data/cooling-io.tsv};
+\draw [latex-] (axis cs:0.5833, 0.91648) |- ++(3\quanta, 4\quanta)
+	node[right, inner sep=3pt] {\footnotesize \SI{8}{\percent} error};
+\draw [latex-] (axis cs:0.5833, 0.84669) |- ++(0mm, -4\quanta);
+
+
+\nextgroupplot[
+	height=3\baselineskip,
+	xtick={0, 3},
+	xticklabels={0, \phantom{h\,}\SI{3}{\hour}},
+	ymin=0, ymax=100,
+	ytick={0, 100},
+	yticklabels={0,1},
+	at={(p5cl cs:2,2)},
+	anchor=south west,
+	]
+\addplot [thick, gray] table [x=TIME, y=RHr] {data/cooling-io.tsv};
+\addplot [thick] coordinates {(0,5) (3,5)}
+	node [fill=white, pos=.5, inner sep=3pt, font=\footnotesize, anchor=mid]
+	{valeur nominale};
+
+\end{groupplot}
+
+\node [anchor=mid west] at (p5cl cs:1,14) {\footnotesize\Qc};
+\node [anchor=mid west] at (p5cl cs:1,9) {\footnotesize\Pel};
+\node [anchor=mid west] at (p5cl cs:1,5) {\footnotesize $ \phi_r $};
+\node [gray, anchor=base] at ($(t5cl cs:2,14)+(.5\colv,0)$)
+	{\scriptsize measurements};
+\node [col, anchor=base] at ($(t5cl cs:2,11)+(.5\colv,0)$)
+	{\scriptsize simulation};
+
+\end{slide}
+
+
+
+
+
 % frequency regressions
 \begin{slide}[Les performances sont corrigées selon la fréquence\\
 			  par des régressions déduites des mesures]
@@ -310,76 +413,6 @@
 \end{scope}
 
 \end{scope}
-
-\end{slide}
-
-
-
-
-
-% total capacity independent from humidity
-\begin{slide}[L'humidité a peu d'impact sur les performances]
-
-\begin{groupplot}[group style={group size=1 by 3,},
-				  width=\bigcol+\colv,
-				  xmin=0, xmax=3,
-				  clip=false,
-				  plot options,]
-\nextgroupplot[
-	height=2\baselineskip,
-	axis x line=none,
-	ymin=3.5, ymax=3.8,
-	ytick={3.5, 3.8},
-	yticklabels={3.5,\SI{3.8}{\kilo\watt}},
-	at={(p5cl cs:2,12)},
-	anchor=south west,
-	]
-\addplot [thick, gray] table [x=TIME, y=Qc-exp] {data/cooling-io.tsv};
-\addplot [thick,  col] table [x=TIME, y=Qc-sim] {data/cooling-io.tsv};
-\draw [latex-] (axis cs:1.7, 3.76) |- ++(3\quanta, 4\quanta)
-	node[right, inner sep=3pt] {\footnotesize \SI{6.5}{\percent} error};
-\draw [latex-] (axis cs:1.7, 3.5148) |- ++(0mm, -4\quanta);
-
-\nextgroupplot[
-	height=2\baselineskip,
-	axis x line=none,
-	ymin=0.84, ymax=0.94,
-	ytick={0.84, 0.94},
-	yticklabels={840,\SI{940}{\watt}},
-	at={(p5cl cs:2,7)},
-	anchor=south west,
-	]
-\addplot [thick, gray] table [x=TIME, y=Pel-exp] {data/cooling-io.tsv};
-\addplot [thick, col] table [x=TIME, y=Pel-sim] {data/cooling-io.tsv};
-\draw [latex-] (axis cs:0.5833, 0.91648) |- ++(3\quanta, 4\quanta)
-	node[right, inner sep=3pt] {\footnotesize \SI{8}{\percent} error};
-\draw [latex-] (axis cs:0.5833, 0.84669) |- ++(0mm, -4\quanta);
-
-
-\nextgroupplot[
-	height=3\baselineskip,
-	xtick={0, 3},
-	xticklabels={0, \phantom{h\,}\SI{3}{\hour}},
-	ymin=0, ymax=100,
-	ytick={0, 100},
-	yticklabels={0,1},
-	at={(p5cl cs:2,2)},
-	anchor=south west,
-	]
-\addplot [thick, gray] table [x=TIME, y=RHr] {data/cooling-io.tsv};
-\addplot [thick] coordinates {(0,5) (3,5)}
-	node [fill=white, pos=.5, inner sep=3pt, font=\footnotesize, anchor=mid]
-	{valeur nominale};
-
-\end{groupplot}
-
-\node [anchor=mid west] at (p5cl cs:1,14) {\footnotesize\Qc};
-\node [anchor=mid west] at (p5cl cs:1,9) {\footnotesize\Pel};
-\node [anchor=mid west] at (p5cl cs:1,5) {\footnotesize $ \phi_r $};
-\node [gray, anchor=base] at ($(t5cl cs:2,14)+(.5\colv,0)$)
-	{\scriptsize measurements};
-\node [col, anchor=base] at ($(t5cl cs:2,11)+(.5\colv,0)$)
-	{\scriptsize simulation};
 
 \end{slide}
 

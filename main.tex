@@ -10,55 +10,29 @@
 \begin{document}
 
 
-\begin{frame}[plain, noframenumbering]
-\makebox[\textwidth][c]{
-\begin{tikzpicture}[overlay, remember picture, inner sep=0pt]%
+% title slide
+\begin{maplayout}
 
+\node[anchor=north east] at ($(page cs:44,11)+(0,0.4\baselineskip)$)
+	{\includegraphics[height=2.8\baselineskip]{pictures/logo-poly.pdf}};
+\node[anchor=base east] at (page cs:44, -11) {Gregor Strugala};
+\node[anchor=base east] at (page cs:44, -27) {\color{gray} 22 mai 2019};
 
-\node[anchor=base west, align=left, font=\LARGE] at (page cs:-44,23)
-	{Modélisation de pompes à chaleur\\air-air à capacité variable (PàCCV)};
-
-\node[anchor=north east] at (page cs:44,11)
-	{\includegraphics[width=\dimexpr0.5\colv+\colvsep\relax]{pictures/logo-poly.pdf}};
-
-\node[anchor=base east] at (page cs:44, -8) {Gregor Strugala};
-\node[anchor=base east] at (page cs:44, -24) {\color{gray} 22 mai 2019};
-
-\fill (page cs:-60,-45) rectangle (page cs:60,-48);
-
-\end{tikzpicture}}
-\end{frame}
-
-
-\begin{frame}[plain, noframenumbering]
-\makebox[\textwidth][c]{
-\begin{tikzpicture}[overlay, remember picture, inner sep=0pt]%
-
-
-\node[anchor=base west, align=left, font=\LARGE] at (page cs:-44,23)
-	{Modélisation de pompes à chaleur\\air-air à capacité variable (PàCCV)};
-
-\node[anchor=base west] at (t5cr cs:2,11) {1};
-\node[anchor=base west] at (t5cl cs:3,11) {Banc d'essai};
-\node[anchor=base west, gray] at (t5cl cs:3,10) {\footnotesize Sous-titre};
-
-\node[anchor=base west] at (t5cr cs:2,7) {2};
-\node[anchor=base west] at (t5cl cs:3,7) {Contrôle};
-\node[anchor=base west, gray] at (t5cl cs:3,6) {\footnotesize Sous-titre};
-
-\node[anchor=base west] at (t5cr cs:2,3) {3};
-\node[anchor=base west] at (t5cl cs:3,3) {Performance};
-\node[anchor=base west, gray] at (t5cl cs:3,2) {\footnotesize Sous-titre};
-
-\fill (page cs:-60,-45) rectangle (page cs:60,-48);
-
-\end{tikzpicture}}
-\end{frame}
+\end{maplayout}
 
 
 \input{parts/intro}
+\map
+
+\map[1]
 \input{parts/test-bench}
+
+\map[2]
 \input{parts/control}
+
+\map[3]
 \input{parts/performance}
+
+\map
 
 \end{document}
