@@ -430,8 +430,6 @@
 \begin{slide}[La régression parvient globalement\\
 			  à prédire correctement la fraction sensible]
 
-%\drawhelplines
-
 \begin{groupplot}[group style={group size=1 by 2,},
 				  width=\bigcol+\colv,
 				  xmin=0, xmax=3,
@@ -550,5 +548,63 @@
 \end{scope}
 
 \end{scope}
+
+\end{slide}
+
+
+
+
+
+% new performance map
+\begin{slide}[Les cartes de performance peuvent être complétées]
+
+%\drawhelplines
+
+\begin{axis}[
+	at={(p5cl cs:1,2)},
+	width=3\colvsep, height=11\baselineskip,
+	plot options, clip=false,
+	xmin=-26.1, xmax=15,
+	xtick={-26.1, -20.6, -15, -10, -5, 0, 5, 8.3, 10, 15},
+	xticklabels={\num{-26.1}\phantom{$-$}, \num{-20.6}\phantom{$-$},
+				 \num{-15}\phantom{$-$}, \num{-10}\phantom{$-$},
+				 \num{-5}\phantom{$-$}, 0, 5, 8.3, 10,
+				 \phantom{\,\si{\celsius}}\SI{15}{\celsius}},
+	ymin=1, ymax= 7.6,
+	ytick={1, 2.3, 3.45, 7.6},
+	yticklabels={1, 2.3, 3.45, \SI{7.6}{\kilo\watt}},
+	every tick label/.append style={font=\scriptsize},
+	font=\footnotesize]
+
+\foreach \i in {1, 2, 3}{
+	\addplot [col!20, mark=*, mark size=1pt, visible on=<3->]
+		table [x=Toa, y=Q_at_f1_Tr\i] {data/Qh-To-gen.tsv};}
+\node [col!20, right, xshift=3mm, visible on=<3->]
+	at (axis cs:15, 2.287) {$ \nu = 0.1 $};
+
+\foreach \i in {1, 2, 3}{
+	\addplot [col!60, mark=*, mark size=1pt, visible on=<2->]
+		table [x=Toa, y=Q_at_f2_Tr\i] {data/Qh-To-gen.tsv};}
+\node [col!60, right, xshift=3mm, visible on=<2->]
+	at (axis cs:15, 4.964) {$ \nu = 0.5 $};
+
+\foreach \i in {1, 2, 3}{
+	\addplot [col, mark=*, mark size=1pt]
+		table [x=Toa, y=Q_at_f3_Tr\i] {data/Qh-To-gen.tsv};}
+\node [col, right, xshift=3mm] at (axis cs:15, 7.420) {$ \nu = 1 $};
+
+\tikzset{inner sep=3pt}
+\draw (axis cs:5, 8.5) node[left] (T1) {\SI{18.3}{\celsius}}
+	  -- ++(7mm,0pt) -- (axis cs:10, 7.34)
+	  (T1.east)++(0pt,-5mm) node[left] (T2) {\SI{21.1}{\celsius}}
+	  -- ++(7mm,0pt) -- (axis cs:10, 7.16)
+	  (T2.east)++(0pt,-5mm) node[left] (T3) {\SI{23.9}{\celsius}}
+	  -- ++(7mm,0pt) -- (axis cs:10, 6.8);
+\node [anchor=base east] at ($(T1.base west)-(2\quanta,0pt)$) {\Tr};
+
+\end{axis}
+
+\node [anchor=mid west, font=\footnotesize] at (p5cl cs:0,13) {\Qh};
+\node [anchor=base east, font=\footnotesize] at (p5cl cs:4.6,0) {\To};
 
 \end{slide}
