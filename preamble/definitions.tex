@@ -44,6 +44,10 @@
 \newlength\templen
 \newlength\buffer
 
+% map layout
+\newlength\w
+\newlength\e
+
 %% lists stuff
 \newenvironment{listed}{
 	\begin{itemize}[nosep]
@@ -59,6 +63,10 @@
 %% Overall style
 
 \colorlet{col}{orange}  % main color
+% map colors
+\colorlet{hls1}{black}
+\colorlet{hls2}{black}
+\colorlet{hls3}{black}
 
 % square bullet items
 \setbeamertemplate{itemize item}[square]
@@ -100,7 +108,7 @@
 		\node (SE) at (page cs:60,-45) {};
 		\node (C) at (page cs:0,0) {};
 		
-		\node[anchor=north west, align=left, font=\Large, black!60!gray,
+		\node[anchor=north west, align=left, font=\Large, black!80,
 			  yshift=\Largeydepth+.95pt, xshift=-.95pt] (title)
 			at (page cs:-52,37) {#1};
 			
@@ -133,6 +141,123 @@
 					(page cs:\x,-45) -- (page cs:\x,45)}
 				foreach \y in {-45,...,45}{
 					(page cs:-60,\y) -- (page cs:60,\y)};}
+
+
+
+% Environment for map and title page
+\NewEnviron{maplayout}{
+
+\begin{frame}[plain, noframenumbering]
+\makebox[\textwidth][c]{
+\begin{tikzpicture}[overlay, remember picture, inner sep=0pt]%
+
+% main title
+\node [anchor=base west, align=left, font=\LARGE, black!80]
+	at (page cs:-44,23) {Modélisation de pompes à chaleur\\
+						 air-air à capacité variable (PàCCV)};
+
+% test bench icon
+\filldraw [hls1!30] (p5cl cs:0,10)++(8\quanta,0) -| ++(7\quanta,5\quanta)
+	-- ++(-3.5\quanta,3\quanta) -- ++(-3.5\quanta,-3\quanta) -- cycle;
+\filldraw [hls1!30] (p5cr cs:0,10)++(8\quanta,0) -- ++(0,5\quanta) --
+	++(-3.5\quanta,3\quanta) -- ++(-3.5\quanta,-3\quanta) |- cycle;
+\draw [very thick, hls1!30]
+	(p5cl cs:0,10)++(15\quanta,\quantum) coordinate (C1)
+	-- +(\colv-14\quanta,0)
+	(C1)++(0,2\quanta) -- +(\colv-14\quanta,0);
+
+
+% control icon
+\setlength\templen{0.8\baselineskip}
+
+\begin{scope}[shift={($(p5cl cs:0,6)+(8\quanta,0)$)},
+			  x=2\baselineskip, y=2\baselineskip]
+
+\setlength\w{1.2\templen}
+\setlength\e{\dimexpr \colv - 4\w \relax}
+
+\draw [hls2!30, -{Stealth[scale=.5]}, thick]
+	(0,0.8) -- ++(\w,0) ++(\w,0) -- ++(\e,0) ++(\w,0) -- ++(\w,0);
+\filldraw [hls2!30] (\w,1) rectangle ++(\w,-\templen)
+				 (2\w+\e,1) rectangle ++(\w,-\templen)
+				 (.5\colv+.4\w,0) -- coordinate (Ain) ++(0,\templen) --
+				 ++(-.8\w,-.5\templen) -- cycle;
+\draw [hls2!30, -{Stealth[scale=.5]}, thick]
+	(\colv-.5\w,.8) |- (Ain) ++(-.8\w,0) -| (.5\w,.8);
+
+
+\end{scope}
+
+
+% performance icon
+\begin{scope}[shift={($(p5cl cs:0,2)+(8\quanta,0)$)},
+			  x=2\baselineskip, y=2\baselineskip]
+
+\setlength\buffer{0.48\baselineskip}
+\filldraw [hls3!30]
+	foreach \X in {0,1}{
+	 	foreach \Y in {0,1}{
+	 		foreach \x in {0,1}{
+	 			foreach \y in {0,1}{
+		(\X*1.2*\baselineskip, \Y*1.2*\baselineskip)++(\x\buffer,\y\buffer)
+		rectangle ++(0.4\templen,0.4\templen)}}}};
+
+\draw [hls3!30, thick] (\colv,0)++(-1,0) coordinate (O) -- ++(1,1);
+\draw [semithick, hls3!30] (\colv,0) -| ++(-1,1);
+\foreach \Point in {{.2,.15}, {.2,.3}, {.3,.31}, {.4,.34}, {.4,.55},
+					{.55,.47}, {.6,.75}, {.7,.45}, {.75,.6}, {.8,.9},
+					{.9,.97}}{
+	\node [dot, scale=.7, hls3!30] at ($(O)+(\Point)$) {};}
+
+\end{scope}
+
+
+\BODY
+
+
+\fill (page cs:-60,-45) rectangle (page cs:60,-48);
+
+\end{tikzpicture}}
+\end{frame}
+}
+
+
+
+% map[i] highlights section i
+\newcommand{\map}[1][0]{
+
+\pgfmathparse{
+    ifthenelse(#1==1, "col", "black")}%
+\colorlet{hls1}{\pgfmathresult}
+\pgfmathparse{
+    ifthenelse(#1==2, "col", "black")}%
+\colorlet{hls2}{\pgfmathresult}
+\pgfmathparse{
+    ifthenelse(#1==3, "col", "black")}%
+\colorlet{hls3}{\pgfmathresult}
+
+\begin{maplayout}
+
+\node[anchor=base east, hls1!60] at (t5cr cs:1,11) {1};
+\node[anchor=base west, hls1] at (t5cl cs:2,11)
+	{Collecter les données adéquates};
+\node[anchor=base west, hls1!60] at (t5cl cs:2,10)
+	{\footnotesize Banc d'essai et calcul des capacités};
+
+\node[anchor=base east, hls2!60] at (t5cr cs:1,7) {2};
+\node[anchor=base west, hls2] at (t5cl cs:2,7) {Modéliser le contrôle};
+\node[anchor=base west, hls2!60] at (t5cl cs:2,6)
+	{\footnotesize Fréquence, mode d'opération et dégivrage};
+
+\node[anchor=base east, hls3!60] at (t5cr cs:1,3) {3};
+\node[anchor=base west, hls3] at (t5cl cs:2,3)
+	{Compléter les performances};
+\node[anchor=base west, hls3!60] at (t5cl cs:2,2)
+	{\footnotesize Corrections pour la fréquence et l'humidité};
+
+\end{maplayout}
+}
+
 
 
 
@@ -178,6 +303,7 @@
 \newcommand{\Qc}{\xmath{\skew{5}\dot Q_\text{c}}}
 \newcommand{\Qcs}{\xmath{\skew{5}\dot Q_\text{cs}}}
 \newcommand{\Qcl}{\xmath{\skew{5}\dot Q_\text{cl}}}
+\newcommand{\Qca}{\xmath{\skew{5}\dot Q}}
 \newcommand{\Pel}{\xmath{P_\text{el}}}
 \newcommand{\Pcp}{\xmath{P_\text{comp}}}
 \newcommand{\Pfi}{\xmath{P_\text{fi}}}
@@ -195,4 +321,8 @@
 \newcommand{\trec}{\xmath{\tau_\text{rec}}}
 \newcommand{\tss}{\xmath{\tau_\text{ss}}}
 \newcommand{\theat}{\xmath{\tau_\text{h}}}
-\newcommand{\Va}[1][]{\xmath{\dot V_{a#1}}}
+\newcommand{\Va}[1][]{\xmath{\skew{3}\dot V_{\hskip-1pt\text{a}#1}}}
+\newcommand{\nph}[1]{\xmath{\varphi_\text{h#1}}}
+\newcommand{\npc}[1]{\xmath{\varphi_\text{c#1}}}
+\newcommand{\npcs}[1]{\xmath{\varphi_\text{cs#1}}}
+\newcommand{\npcl}[1]{\xmath{\varphi_\text{cl#1}}}
