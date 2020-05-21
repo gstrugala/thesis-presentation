@@ -238,7 +238,7 @@
 \addplot[thick,  col] table[x=TIME, y=Qc-sim] {data/cooling-io.tsv};
 \draw[latex-] (axis cs:1.7, 3.76) |- ++(3\quanta, 4\quanta)
 	node[right, inner sep=3pt] {\footnotesize \SI{6.5}{\percent} error};
-\draw[latex-] (axis cs:1.7, 3.5148) |- ++(0, -4\quanta);
+\draw[latex-] (axis cs:1.7, 3.5148) |- ++(0mm, -4\quanta);
 
 \nextgroupplot[
 	height=3\baselineskip,
@@ -254,7 +254,7 @@
 \addplot[thick, col] table[x=TIME, y=Pel-sim] {data/cooling-io.tsv};
 \draw[latex-] (axis cs:0.5833, 0.91648) |- ++(3\quanta, 4\quanta)
 	node[right, inner sep=3pt] {\footnotesize \SI{8}{\percent} error};
-\draw[latex-] (axis cs:0.5833, 0.84669) |- ++(0, -4\quanta);
+\draw[latex-] (axis cs:0.5833, 0.84669) |- ++(0mm, -4\quanta);
 
 \end{groupplot}
 
@@ -298,7 +298,7 @@
 \addplot[thick, col] table[x=TIME, y=Ts-sim] {data/cooling-sim.tsv};
 \draw[latex-] (axis cs:2.6, 17.373) |- ++(3\quanta, 4\quanta)
 	node[right, inner sep=3pt] {\footnotesize\SI{3.7}{\celsius}};
-\draw[latex-] (axis cs:2.6, 13.689) -- ++(0, -4\quanta);
+\draw[latex-] (axis cs:2.6, 13.689) -- ++(0mm,-4\quanta);
 
 
 \nextgroupplot[
