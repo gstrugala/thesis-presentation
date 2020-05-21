@@ -98,7 +98,8 @@
 	font=\footnotesize,
 	height=11\baselineskip, width=3\colv+2\baselineskip,
 	enlargelimits=false, colorbar,
-	colormap={og}{color(0)=(gray) color(35)=(gray!50) color(105)=(col!50) color(142)=(col)},
+	colormap={og}{color(0)=(gray) color(35)=(gray!50)
+				  color(105)=(col!50) color(142)=(col)},
 	colorbar style={major tick length=0pt,
 					ytick={20, 40, ..., 140},
 					yticklabels={20, 40, ..., 120, \SI{140}{\hertz}},
@@ -176,9 +177,9 @@
 
 \node[font=\scriptsize, align=left, anchor=base west]
 	at (t5cl cs:1,0) {fréquence\\normalisée};
-\node[font=\scriptsize, anchor=mid west]
+\node[font=\scriptsize, anchor=mid west, visible on=<1>]
 	at (p5cl cs:4.2,14) {$ \dfrac{\Qh}{\SI{6.5}{\kilo\watt}} $};
-\node[font=\scriptsize, anchor=mid west]
+\node[font=\scriptsize, anchor=mid west, visible on=<1>]
 	at (p5cl cs:4.2,7) {$ \dfrac{\Pel}{\SI{2.87}{\kilo\watt}} $};
 
 
@@ -227,6 +228,10 @@
 
 \end{groupplot}
 
+\node[font=\scriptsize, anchor=mid west, visible on=<2>]
+	at (p5cl cs:4.2,14) {$ \dfrac{\Qc}{\SI{3.6}{\kilo\watt}} $};
+\node[font=\scriptsize, anchor=mid west, visible on=<2>]
+	at (p5cl cs:4.2,7) {$ \dfrac{\Pel}{\SI{0.96}{\kilo\watt}} $};
 
 \end{slide}
 
@@ -265,14 +270,6 @@
 		-- ++(-\quantum,0) coordinate (V\y)}
 	(V0) -- node [left, xshift=-1mm] {\Va} (V3);
 
-% labels
-\draw [col] ($(N333)+(-0.5*\sss,3\quanta)$) -- ++(0,\baselineskip)
-	node [anchor=base, black, font=\scriptsize, yshift=3\quanta]
-		{fourni};
-\draw [gray] ($(N133)+(-0.5*\sss,3\quanta)$) -- ++(0,\baselineskip)
-	node [anchor=base, black, font=\scriptsize, yshift=3\quanta]
-		{manquant};
-
 % Zoom
 \begin{scope}[xshift=45mm, z={(.6,1)}]
 
@@ -305,6 +302,250 @@
 		(c00\z -| C33\z)++(\baselineskip,0)++(-\quantum,0)
 		-- ++(\quantum,0) coordinate (To\z)}
 	(To0) -- node [right, xshift=2mm] {\To} (To3);
+
+\draw [ultra thin, gray]
+	($(n330)+(0,\sss)$) -- ($(c000)+(0,3*\pad+\squaresize)$)
+	($(N333)-(\sss,0)$) -- ($(c003)+(0,3*\pad+\squaresize)$);
+
+\end{scope}
+
+\end{scope}
+
+\end{slide}
+
+
+
+
+
+% total capacity independent from humidity
+\begin{slide}[L'humidité a peu d'impact sur les performances]
+
+\begin{groupplot}[group style={group size=1 by 3,},
+				  width=\bigcol+\colv,
+				  xmin=0, xmax=3,
+				  clip=false,
+				  plot options,]
+\nextgroupplot[
+	height=2\baselineskip,
+	axis x line=none,
+	ymin=3.5, ymax=3.8,
+	ytick={3.5, 3.8},
+	yticklabels={3.5,\SI{3.8}{\kilo\watt}},
+	at={(p5cl cs:2,12)},
+	anchor=south west,
+	]
+\addplot [thick, gray] table [x=TIME, y=Qc-exp] {data/cooling-io.tsv};
+\addplot [thick,  col] table [x=TIME, y=Qc-sim] {data/cooling-io.tsv};
+\draw [latex-] (axis cs:1.7, 3.76) |- ++(3\quanta, 4\quanta)
+	node[right, inner sep=3pt] {\footnotesize \SI{6.5}{\percent} error};
+\draw [latex-] (axis cs:1.7, 3.5148) |- ++(0mm, -4\quanta);
+
+\nextgroupplot[
+	height=2\baselineskip,
+	axis x line=none,
+	ymin=0.84, ymax=0.94,
+	ytick={0.84, 0.94},
+	yticklabels={840,\SI{940}{\watt}},
+	at={(p5cl cs:2,7)},
+	anchor=south west,
+	]
+\addplot [thick, gray] table [x=TIME, y=Pel-exp] {data/cooling-io.tsv};
+\addplot [thick, col] table [x=TIME, y=Pel-sim] {data/cooling-io.tsv};
+\draw [latex-] (axis cs:0.5833, 0.91648) |- ++(3\quanta, 4\quanta)
+	node[right, inner sep=3pt] {\footnotesize \SI{8}{\percent} error};
+\draw [latex-] (axis cs:0.5833, 0.84669) |- ++(0mm, -4\quanta);
+
+
+\nextgroupplot[
+	height=3\baselineskip,
+	xtick={0, 3},
+	xticklabels={0, \phantom{h\,}\SI{3}{\hour}},
+	ymin=0, ymax=100,
+	ytick={0, 100},
+	yticklabels={0,1},
+	at={(p5cl cs:2,2)},
+	anchor=south west,
+	]
+\addplot [thick, gray] table [x=TIME, y=RHr] {data/cooling-io.tsv};
+\addplot [thick] coordinates {(0,5) (3,5)}
+	node [fill=white, pos=.5, inner sep=3pt, font=\footnotesize, anchor=mid]
+	{valeur nominale};
+
+\end{groupplot}
+
+\node [anchor=mid west] at (p5cl cs:1,14) {\footnotesize\Qc};
+\node [anchor=mid west] at (p5cl cs:1,9) {\footnotesize\Pel};
+\node [anchor=mid west] at (p5cl cs:1,5) {\footnotesize $ \phi_r $};
+\node [gray, anchor=base] at ($(t5cl cs:2,14)+(.5\colv,0)$)
+	{\scriptsize measurements};
+\node [col, anchor=base] at ($(t5cl cs:2,11)+(.5\colv,0)$)
+	{\scriptsize simulation};
+
+\end{slide}
+
+
+
+
+
+% SHR regression
+\begin{slide}[La fraction de capacité sensible est déduite\\
+			  de la différence entre le dry-bulb et le wet-bulb]
+
+\begin{axis}[
+	at={(p5cr cs:1,3)},
+	width=2\colvsep,
+	height=10\baselineskip,
+	clip mode=individual,
+	plot options, clip=false,
+	ymin=0, ymax=1, xmax=18.8,
+	xtick={0.67, 18.8},
+	xticklabels={0.67, \SI{18.8}{\celsius}},
+	ytick={0, 1},
+	axis y line*=right,
+	yticklabel style={xshift=6\quanta-2\ssMheight}]
+
+\addplot [only marks, mark size=.7pt, opacity=0.2]
+	table[x=wb_depression, y=SHR] {data/SHR-hum.tsv};
+
+\addplot [col, very thick, domain=0.67:18.79]
+	{1 + 0.6*(tanh(0.144*x - 0.724) - 1)}
+		node [mid left, pos=0, inner sep=3pt] {\scriptsize fit};
+
+\node [right] at (axis cs:11, 0.46) {\scriptsize measuremements};
+
+\end{axis}
+
+\node [font=\footnotesize, anchor=mid west]
+	at (p5cl cs:4.2,13) {$ \dfrac{\Qcs}{\Qc} $};
+\node [font=\footnotesize, anchor=base west]
+	at (t5cl cs:1,1) {$ \Tr - \Twbr $};
+
+\end{slide}
+
+
+
+
+
+% SHR regression accurate
+\begin{slide}[La régression parvient globalement\\
+			  à prédire correctement la fraction sensible]
+
+%\drawhelplines
+
+\begin{groupplot}[group style={group size=1 by 2,},
+				  width=\bigcol+\colv,
+				  xmin=0, xmax=3,
+				  clip=false,
+				  plot options,]
+\nextgroupplot[
+	height=3\baselineskip,
+	axis x line=none,
+	ymin=0, ymax=3.7,
+	ytick={0, 2.1, 3.7},
+	yticklabels={0, 2.1, \SI{3.7}{\kilo\watt}},
+	at={(p5cl cs:2,9)},
+	anchor=south west,
+	]
+\addplot [thick, gray] table [x=TIME, y=Qcs-exp] {data/cooling-io.tsv};
+\addplot [thick,  col] table [x=TIME, y=Qcs-sim] {data/cooling-io.tsv};
+
+\nextgroupplot[
+	height=3\baselineskip,
+	xtick={0, 3},
+	xticklabels={0, \phantom{h\,}\SI{3}{\hour}},
+	ymin=0, ymax=2.5,
+	ytick={0, 1.5, 2.5},
+	yticklabels={0, 1.5, \SI{2.5}{\kilo\watt}},
+	at={(p5cl cs:2,3)},
+	anchor=south west,
+	]
+\addplot [thick, gray] table [x=TIME, y=Qcl-exp] {data/cooling-io.tsv};
+\addplot [thick, col] table [x=TIME, y=Qcl-sim] {data/cooling-io.tsv};
+
+
+\end{groupplot}
+
+\node [anchor=mid west] at (p5cl cs:1,12) {\footnotesize\Qcs};
+\node [anchor=mid west] at (p5cl cs:1,6) {\footnotesize\Qcl};
+\node [gray, anchor=base] at ($(t5cl cs:3,12)+(.5\colv,0)$)
+	{\scriptsize measurements};
+\node [col, anchor=base] at ($(t5cl cs:3,9)+(.5\colv,0)$)
+	{\scriptsize simulation};
+
+\end{slide}
+
+
+
+
+
+% MAP
+\begin{slide}[Les cartes de performance doivent être complétées]
+
+\begin{scope}[shift={(p5cl cs:1,4)}, z={(.075,.125)}, font=\footnotesize]
+
+\def\sss{0.25}	% small square size
+\def\lss{.75}	% large square size
+
+% Global performance map
+\foreach \x in {0, ..., 3}{\foreach \y in {0, ..., 3}{
+	\foreach \z in {3, ..., 0}{
+	\ifnum \y=3
+		\draw [ultra thin, fill=col!40]
+	\else
+		\draw [ultra thin, fill=gray!30, visible on=<1>]
+	\fi
+	(\x*\lss,\y*\lss,\z) coordinate (n\x\y\z) rectangle
+	(\x*\lss+\sss,\y*\lss+\sss,\z) coordinate (N\x\y\z);}}}
+
+% Axes
+\draw [gray, semithick, visible on=<1>]
+	foreach \x in {0, ..., 3}{
+		(n\x00)++(.5*\sss,-\baselineskip)++(0,\quantum)
+		-- ++(0,-\quantum) coordinate (f\x)}
+	(f0) -- node [below, yshift=-1mm] {\fc} (f3);
+\draw [gray, semithick, visible on=<2>]
+	foreach \x in {0, ..., 3}{
+		(n\x30)++(.5*\sss,-\baselineskip)++(0,\quantum)
+		-- ++(0,-\quantum) coordinate (f\x)}
+	(f0) -- node [below, yshift=-1mm] {\fc} (f3);
+\draw [gray, semithick, visible on=<1>]
+	foreach \y in {0, ..., 3}{
+		(n0\y0)++(-\baselineskip,.5*\sss)++(\quantum,0)
+		-- ++(-\quantum,0) coordinate (V\y)}
+	(V0) -- node [left, xshift=-1mm] {\Va} (V3);
+
+% Zoom
+\begin{scope}[xshift=45mm, z={(.6,1)}]
+
+\def\squaresize{.2}
+\def\pad{1.2*\squaresize}
+
+\foreach \x in {0, ..., 3}{\foreach \y in {0, ..., 3}{
+	\foreach \z in {0, ..., 3}{
+		\fill [col!40]
+	(\pad*\x,\pad*\y,\z) coordinate (c\x\y\z) rectangle
+	(\pad*\x+\squaresize,\pad*\y+\squaresize,\z) coordinate (C\x\y\z);}}}
+
+% Axes
+\draw [gray, semithick]
+	foreach \x in {0, ..., 3}{
+		(c\x00)++(.5*\squaresize,-\baselineskip)++(0,\quantum)
+		-- ++(0,-\quantum) coordinate (Tr\x)}
+	(Tr0) -- node [below, yshift=-1mm] {\Tr} (Tr3);
+\draw [gray, semithick]
+	foreach \y in {0, ..., 3}{
+		(c0\y0)++(-\baselineskip,.5*\squaresize)++(\quantum,0)
+		-- ++(-\quantum,0) coordinate (wb\y)}
+	(wb0) -- node [left, xshift=-1mm] {\Twbr} (wb3);
+\draw [gray, semithick]
+	foreach \z in {0, ..., 3}{
+		(c00\z -| C33\z)++(\baselineskip,0)++(-\quantum,0)
+		-- ++(\quantum,0) coordinate (To\z)}
+	(To0) -- node [right, xshift=2mm] {\To} (To3);
+
+\draw [ultra thin, gray]
+	($(n330)+(0,\sss)$) -- ($(c000)+(0,3*\pad+\squaresize)$)
+	($(N333)-(\sss,0)$) -- ($(c003)+(0,3*\pad+\squaresize)$);
 
 \end{scope}
 
