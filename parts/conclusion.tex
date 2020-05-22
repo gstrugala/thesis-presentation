@@ -13,8 +13,6 @@
 	{\includegraphics[height=9\baselineskip]{pictures/plex-unit}};
 
 
-%\drawhelplines
-
 % cooling results
 \begin{groupplot}[group style={group size=1 by 3},
 				  width=3\colvsep,
@@ -199,4 +197,25 @@
 \end{groupplot}
 
 
+\end{slide}
+
+
+
+
+
+% Travaux futurs
+\begin{slide}[Certains aspects du modèle\\
+			  peuvent encore être améliorés]
+
+\node [anchor=base west] at (t5cr cs:1,2){
+	\begin{minipage}[b]{2.2\colvsep}\raggedright
+	\begin{listed}
+		\item Correction qui dépend du débit
+		\item<2-> Mode pour des simulations\\à pas de temps élevés
+		\item<3-> Influence de l'humidité\\sur la capacité totale
+		\item<4-> Étendre les valeurs de \Qc\\à des basses températures
+		\item<5-> Tests avec la fréquence du compresseur imposée
+	\end{listed}
+	\end{minipage}};
+	
 \end{slide}
