@@ -1,39 +1,41 @@
 % MAP: PID
-\begin{slide}
+\begin{slide}[La fréquence est régulée avec un contrôleur PI]
 
 \begin{scope}[shift={(p5cl cs:0,13)}, node distance=5mm,
 			  font=\footnotesize, inner sep=3pt]
 
-\node[anchor=west] (Tset) at (.1,0) {$ T_\text{set} $};
-\node[right=of Tset, sum] (sum1) {$ \sum $};
-\coordinate[dot, right=1cm of sum1] (N1);
+\node [anchor=west] (Tset) at (.1,0) {$ T_\text{set} $};
+\node [right=of Tset, sum] (sum1) {$ \sum $};
+\coordinate [dot, right=1cm of sum1] (N1);
 
-\node[block, anchor=north west] (ki) at ($(N1)+(.4,-1cm)$)
+\node [block, anchor=north west] (ki) at ($(N1)+(.4,-1cm)$)
 	{$ \dfrac{k_p}{\tau_i} $};
-\node[right=1cm of ki, block] (I) {$ \dfrac{1}{s} $};
+\node [right=1cm of ki, block] (I) {$ \dfrac{1}{s} $};
 
 \coordinate (C1) at ($(I.east)+(.3,0)$);
-\node[sum] (sum3) at (C1 |- N1) {$\sum$};
-\node[block] (kp) at ($(N1)!0.5!(sum3)$) {$ k_p $};
-\coordinate[right=1cm of sum3] (N2) {};
+\node [sum] (sum3) at (C1 |- N1) {$\sum$};
+\node [block] (kp) at ($(N1)!0.5!(sum3)$) {$ k_p $};
+\coordinate [right=1cm of sum3] (N2) {};
 
-\node[block, below=25mm of kp, inner sep=5pt] (sys) {system};
-\node[block, inner sep=5pt] (opp2) at (sys -| sum1) {$ -1 $};
+\node [block, below=25mm of kp, inner sep=5pt] (sys) {system};
+\node [block, inner sep=5pt] (opp2) at (sys -| sum1) {$ -1 $};
 
 \foreach \start/\stop in {Tset/sum1, sum1/N1, N1/kp, kp/sum3,
 						  ki/I, sys/opp2, opp2/sum1}{
-	\draw[-latex] (\start) -- (\stop);}
-\draw[-latex] (N1) |- (ki);
-\draw[-latex] (I)  -| (sum3);
-\draw[-latex] (sum3) -- (N2) |- (sys);
+	\draw [-latex] (\start) -- (\stop);}
+\draw [-latex] (N1) |- (ki);
+\draw [-latex] (I)  -| (sum3);
+\draw [-latex] (sum3) -- (N2) |- (sys);
 
 % labels
-\node[above] at (N1) {$ e $};
-\node[fill=white]
+\node [above] at (N1) {$ e $};
+\node [fill=white]
 	at ($(opp2)!0.5!(sum1)$) {$ \,-\Tr\phantom{-} $};
-\node[fill=white] at ($(sys)!0.5!(sys -| opp2)$) {\Tr};
-\node[fill=white] at ($(N2)!0.5!(N2 |- sys)$) {$ \hat\fc $};
+\node [fill=white] at ($(sys)!0.5!(sys -| opp2)$) {\Tr};
+\node (fc) [fill=white] at ($(N2)!0.5!(N2 |- sys)$) {$ \hat\fc $};
 
+\draw [gray] (fc) -- ++(8\quanta,0)
+	node [right, font=\scriptsize, align=left, yshift=-\quantum] {fréquence\\\og brute \fg};
 	  
 \end{scope}
 
@@ -82,7 +84,7 @@
 
 
 % MAP: operating mode
-\begin{slide}
+\begin{slide}[La fréquence est régulée avec un contrôleur PI]
 
 \begin{scope}[shift={(p5cl cs:0,13)}, node distance=5mm,
 			  font=\footnotesize, inner sep=3pt]
@@ -311,7 +313,7 @@
 
 
 % MAP: frequency limits & quantization
-\begin{slide}
+\begin{slide}[La fréquence est régulée avec un contrôleur PI]
 
 \begin{scope}[shift={(p5cl cs:0,13)}, node distance=5mm,
 			  font=\footnotesize, inner sep=3pt]
@@ -584,7 +586,7 @@
 
 
 % MAP: whole controller
-\begin{slide}
+\begin{slide}[La fréquence est régulée avec un contrôleur PI]
 
 \begin{scope}[shift={(p5cl cs:0,13)}, node distance=5mm,
 			  font=\footnotesize, inner sep=3pt]
