@@ -4,14 +4,14 @@
 
 % Illustration
 \only<1>{
-\node[anchor=mid west, align=left] at (p5cl cs:1,11) {capacité\\fixe};
-\node[anchor=mid west, align=left] at (p5cl cs:1,3) {capacité\\variable};
+\node [anchor=mid west, align=left] at (p5cl cs:1,11) {capacité\\fixe};
+\node [anchor=mid west, align=left] at (p5cl cs:1,3) {capacité\\variable};
 
 \begin{scope}[shift={(p5cr cs:1,10)},
 			  x=\bigcol/6+\baselineskip/6, y=3\baselineskip]
 
-\draw[semithick] (0,.3333333) -- (3,.33333333) |- (6,.666666);
-\draw[col, very thick]
+\draw [semithick] (0,.3333333) -- (3,.33333333) |- (6,.666666);
+\draw [col, very thick]
 	  (0,0) .. controls (0.1, 1) and (0.2, 1) .. (0.5,1)
    -- (0.5,1) .. controls (0.52, 0) and (0.6, 0) .. (0.7,0)
    -- (1.5,0) .. controls (1.6, 1) and (1.7, 1) .. (2,1)
@@ -24,15 +24,15 @@
 \end{scope}
 
 
-\node[becomes, rotate=180] at (p5cr cs:2,7.5) {};
+\node [becomes, rotate=180] at (p5cr cs:2,7.5) {};
 
 
 \begin{scope}[shift={(p5cr cs:1,2)},
 			  x=\bigcol/6+\baselineskip/6, y=\baselineskip]
 
-\draw[semithick] (0,1) -- (3,1) |- (6,2);
+\draw [semithick] (0,1) -- (3,1) |- (6,2);
 \def\phase{46.87329}  % found numerically with scipy
-\draw[col, very thick] plot[domain=0:3, samples=100, smooth]
+\draw [col, very thick] plot [domain=0:3, samples=100, smooth]
 			(\x, {1 - exp(-2*\x) * cos(700*\x + \phase) / cos(\phase)});
 	
 \end{scope}
@@ -44,23 +44,35 @@
 % use rect line cap for joining but clip the part sticking out
 \clip (p5cr cs:1,3) rectangle ++(2\colvsep,3\baselineskip);
 \def\phase{46.87329}
-\draw[col, very thick, line cap=rect] plot[domain=0:3, samples=100, smooth]
+\draw [col, very thick, line cap=rect]
+	plot [domain=0:3, samples=100, smooth]
 			(\x, {1 - exp(-2*\x) * cos(700*\x + \phase) / cos(\phase)});
 \end{scope}
 }
 
+%\drawhelplines
 
 % Advantages
-\only<2->{
-\node[anchor=base west, align=left] (list) at (t5cr cs:1,5){
-	\begin{minipage}[b]{2\colvsep}
-	\hskip-.8pt Et ainsi elles augmentent\\
-	\begin{listed}
-        \item la performance
-        \item la plage de températures
-    \end{listed}
-    \end{minipage}};
-}
+\node (N1) [anchor=base, align=left, visible on=<2->]
+	at ($(t5cl cs:2,12)+(\colv/2,0)$)
+	{Et ainsi elles permettent d'éviter un fonctionnement intermittent};
+\node (S1) [anchor=base west, align=left, visible on=<2->]
+	at ($(N1.base west)-(0,5\baselineskip)$)
+	{Il y a une meilleure\\performance saisonnière};
+\node (S2) [anchor=base east, align=left, visible on=<3->]
+	at ($(N1.base east)-(0,5\baselineskip)$)
+	{Les échangeurs peuvent\\être surdimensionnés};
+\node (P1) [anchor=base east, align=left, visible on=<4>]
+	at ($(S2.base east)-(0,5\baselineskip)$)
+	{La plage de température\\est plus large};
+\node [becomes, rotate=180, visible on=<2->]
+	at ($(N1.south -| S1)!0.5!(S1.north)$) {};
+\node [becomes, rotate=180, visible on=<3->]
+	at ($(N1.south -| S2)!0.5!(S2.north)$) {};
+\node [becomes, rotate=90, visible on=<4>]
+	at ($(S1.east)!0.5!(S2.west)$) {};
+\node [becomes, rotate=180, visible on=<4>]
+	at ($(S2.south)!0.5!(P1.north)$) {};
 
 \end{slide}
 
@@ -73,7 +85,8 @@
 \node[anchor=base west] (text) at (t5cl cs:0,4) {
 	\begin{minipage}[b]{\dimexpr2\colvsep+4\quanta}\raggedright
 		\emph{Exemple}\\[2\baselineskip]
-		Profil de consommation\\d'une unité de résidence typique,\\~\\
+		Simuler le profil de consommation\\
+		d'une unité de résidence typique,\\~\\
 		avec un pas de temp $ \Delta t = \SI{1}{\minute} $
 	\end{minipage}};
 
@@ -98,21 +111,22 @@
 			 			  \phantom{\,\si{\celsius}}\SI{15}{\celsius}},
 			 ytick={1.42, 4.75},]
 \foreach \i in {1, ..., 4}{
-	\addplot[mark=*, mark size=1pt, semithick] table[x=Toa, y=COP_at_T\i]
+	\addplot [mark=*, mark size=1pt, semithick] table[x=Toa, y=COP_at_T\i]
 		{data/manu-data-heating.tsv};}
 \foreach \i/\COP in {1/4.75, 2/4.524, 3/4.339, 4/3.961}{%
 	\edef\temp{\noexpand\node (T\i) at (axis cs:15,\COP) {};}
 	\temp}
 \end{axis}
-\node[anchor=mid west, font=\footnotesize] at (p5cl cs:1,14) {COP};
-\node[anchor=base east, font=\footnotesize] (Toa)
+\node [anchor=mid west, font=\footnotesize] at (p5cl cs:1,14) {COP};
+\node [anchor=base east, font=\footnotesize] (Toa)
 	at (t5cr cs:4,0) {\To};
 \foreach \i/\Ti in {1/15.6, 2/18.3, 3/21.1, 4/23.8}{
-	\node[font=\footnotesize, gray, anchor=east] (Tr\i)
+	\node [font=\footnotesize, gray, anchor=east] (Tr\i)
 		at (T\i -| Toa.east) {\SI{\Ti}{\celsius}};
-	\draw[gray] (T\i)++(4.5pt,0) -- ($(Tr\i.west)-(4pt,0)$);}
-\node[anchor=west, yshift=-2\baselineskip, font=\footnotesize]
-	at (Tr4.west) {\Tr};
+	\draw [gray] (T\i)++(4.5pt,0) -- ($(Tr\i.west)-(4pt,0)$);}
+\node [anchor=east, yshift=-2\baselineskip, font=\scriptsize, align=left,
+	  gray]
+	at (Tr4.east) {Température\\intérieure};
 }
 
 \def\displayat{2}
@@ -140,17 +154,17 @@
 					 axis background/.style={fill=background}]
 		
 		\foreach \i in {1, ..., 4}{
-			\addplot[mark=*, mark size=.5pt] table[x=Toa, y=COP_at_T\i]
+			\addplot [mark=*, mark size=.5pt] table [x=Toa, y=COP_at_T\i]
 				{data/manu-data-heating.tsv};}
 			
 		\end{axis}
 		\ifnum \row=0
-			\node[xshift=.5\colv, anchor=base, visible on=<3-4>]
+			\node [xshift=.5\colv, anchor=base, visible on=<3-4>]
 				at (p5cl cs:\col,14){\ma[\collabel]};
 		\fi
 	}
 	\pgfmathparse{2+\row}\let\labelypos\pgfmathresult
-	\node[anchor=east, visible on=<2-4>] (row\row)
+	\node [anchor=east, visible on=<2-4>] (row\row)
 		at ($(p5cr cs:1,0)+(0,{(22+56*\row)*\quantum/3})$)
 		{\fc[\rowlabel]};
 }
@@ -160,16 +174,16 @@
 	   \uncover<4>{\approx \SI{11}{\percent}} $};
 
 \uncover<3-4>{
-	\node[align=left, font=\footnotesize] (required)
+	\node [align=left, font=\footnotesize] (required)
 		at (pct.202 |- row0) {paires $ (f, \dot m) $\\nécessaires};
 	\draw (pct.202)++(0,-4pt) -- ($(required.north)+(0,4pt)$);}
 \uncover<4>{
-	\node[align=left, font=\footnotesize] (provided)
+	\node [align=left, font=\footnotesize] (provided)
 		at (pct.158 |- row2) {paire $ (f, \dot m) $\\fournie};
-	\draw[col] (pct.158)++(0,4pt) -- ($(provided.south)-(0,4pt)$);}
+	\draw [col] (pct.158)++(0,4pt) -- ($(provided.south)-(0,4pt)$);}
 
 
-\node[anchor=base west, align=left, visible on=<5>] at (t5cr cs:1,2){
+\node [anchor=base west, align=left, visible on=<5>] at (t5cr cs:1,2){
 	\begin{minipage}[b]{3\colvsep}\raggedright
 	\hskip-.8pt Beaucoup de ``cas spéciaux'' sont détaillés,\\~\\
 	\begin{listed}
@@ -221,7 +235,7 @@
 
 \only<1>{
 \begin{groupplot}[group style={group size=1 by 2,},
-				  width=\bigcol+\colvsep,
+				  width=\bigcol+\colv,
 				  xmin=0, xmax=3,
 				  clip=false,
 				  plot options,]
@@ -231,14 +245,14 @@
 	ymin=3.5, ymax=3.8,
 	ytick={3.5, 3.8},
 	yticklabels={3.5,\SI{3.8}{\kilo\watt}},
-	at={(p5cr cs:1,10)},
-	anchor=south west,
-	]
-\addplot[thick, gray] table[x=TIME, y=Qc-exp] {data/cooling-io.tsv};
-\addplot[thick,  col] table[x=TIME, y=Qc-sim] {data/cooling-io.tsv};
+	at={(p5cl cs:2,10)},
+	anchor=south west]
+\addplot [thick, gray] table [x=TIME, y=Qc-exp] {data/cooling-io.tsv};
+\addplot [thick,  col] table [x=TIME, y=Qc-sim] {data/cooling-io.tsv};
 \draw[latex-] (axis cs:1.7, 3.76) |- ++(3\quanta, 4\quanta)
-	node[right, inner sep=3pt] {\footnotesize \SI{6.5}{\percent} error};
-\draw[latex-] (axis cs:1.7, 3.5148) |- ++(0mm, -4\quanta);
+	node [right, inner sep=3pt]
+		{\footnotesize \SI{6.5}{\percent} d'erreur};
+\draw [latex-] (axis cs:1.7, 3.5148) |- ++(0mm, -4\quanta);
 
 \nextgroupplot[
 	height=3\baselineskip,
@@ -247,21 +261,20 @@
 	ymin=0.84, ymax=0.94,
 	ytick={0.84, 0.94},
 	yticklabels={840,\SI{940}{\watt}},
-	at={(p5cr cs:1,3)},
-	anchor=south west,
-	]
-\addplot[thick, gray] table[x=TIME, y=Pel-exp] {data/cooling-io.tsv};
-\addplot[thick, col] table[x=TIME, y=Pel-sim] {data/cooling-io.tsv};
-\draw[latex-] (axis cs:0.5833, 0.91648) |- ++(3\quanta, 4\quanta)
-	node[right, inner sep=3pt] {\footnotesize \SI{8}{\percent} error};
-\draw[latex-] (axis cs:0.5833, 0.84669) |- ++(0mm, -4\quanta);
+	at={(p5cl cs:2,3)},
+	anchor=south west]
+\addplot [thick, gray] table [x=TIME, y=Pel-exp] {data/cooling-io.tsv};
+\addplot [thick, col] table [x=TIME, y=Pel-sim] {data/cooling-io.tsv};
+\draw [latex-] (axis cs:0.5833, 0.91648) |- ++(3\quanta, 4\quanta)
+	node [right, inner sep=3pt] {\footnotesize \SI{8}{\percent} d'erreur};
+\draw [latex-] (axis cs:0.5833, 0.84669) |- ++(0mm, -4\quanta);
 
 \end{groupplot}
 
-\node[anchor=mid west] at (p5cr cs:0,13) {\footnotesize\Qc};
-\node[anchor=mid west] at (p5cr cs:0,6) {\footnotesize\Pel};
+\node[anchor=mid west] at (p5cr cs:0,13) {\footnotesize Capacité};
+\node[anchor=mid west] at (p5cr cs:0,6) {\footnotesize Puissance};
 \node[gray, anchor=base west] at (t5cr cs:1.4,13.5)
-	{\scriptsize measurements};
+	{\scriptsize mesures};
 \node[col, anchor=base west] at (t5cr cs:1.4,9) {\scriptsize simulation};
 }
 

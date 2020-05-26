@@ -65,16 +65,12 @@
 	-| ($(IU.east)+(.55,.05)$) -- ($(IU.east)+(0,.05)$);
 \draw[gray, midarrow=0.65-latex, semithick] (IU.east)++(0,-.05)
 	-- ++(.45,0) |- ($(OU.west)-(0,.05)$);
-\node[col, yshift=3\quanta] at (OU.west -| N) {\scriptsize gaz};
-\node[gray, yshift=-3\quanta] at (OU.west -| N) {\scriptsize liquide};
 }
 \only<2>{
 \draw[gray, midarrow=0.65-latex, semithick] (IU.east)++(0,.05) -- ++(.55,0)
 	|- ($(OU.west)+(0,.05)$);
 \draw[col, midarrow=0.5-latex, semithick] (OU.west)++(0,-.05)
 	-| ($(IU.east)+(.45,-.05)$) -- ($(IU.east)-(0,.05)$);
-\node[col, yshift=-3\quanta] at (OU.west -| N) {\scriptsize gaz};
-\node[gray, yshift=3\quanta] at (OU.west -| N) {\scriptsize liquide};
 }
 
 % heat flux
@@ -103,7 +99,6 @@
 \begin{slide}[Le débit d'air de l'unité intérieure\\
 			  est mesuré avec un \emph{duct blaster}]
 
-%\drawhelplines
 
 \begin{scope}[shift={(p5cl cs:0.3,6)}]
 
@@ -175,6 +170,9 @@
 \end{slide}
 
 
+
+
+
 \setlength{\templen}{7\baselineskip}
 
 \begin{slide}[Les capacités totales sont plus facilement calculées\\
@@ -184,24 +182,26 @@
 \begin{scope}[shift={(p5cl cs:0,4)}, visible on=<{1,4-5}>]
 
 % four-way valve 
-\coordinate[circle, draw, thick, minimum size=7mm]
+\coordinate [circle, draw, thick, minimum size=7mm]
 	(4wValve) at (\templen, 0.5\templen) {};
 
 % compressor
-\coordinate[compressor, draw, thick, minimum size=7mm,
-			right=\bigcol-\templen of 4wValve.center, anchor=center]
+\coordinate [compressor, draw, thick, minimum size=7mm,
+			 right=\bigcol-\templen of 4wValve.center, anchor=center]
 	(comp);
 
 % indoor unit HX
-\draw[thick, HX] (0.5\templen-5mm,\templen) node(iuOut){} -- ++(1,0)
-	node(iuIn){};
+\draw[thick, HX] (0.5\templen-5mm,\templen) node (iuOut) {} --
+	node [yshift=2\baselineskip, gray] {\scriptsize unité intérieure}
+	++(1,0) node (iuIn) {};
 
 % expansion valve
-\coordinate[expValve] (v) at (0,0.5\templen) {};
+\coordinate [expValve] (v) at (0,0.5\templen) {};
 
 % outdoor unit HX
-\draw[HX, thick] (0.5\templen-5mm,0) node(ouIn){} -- ++(1,0)
-	node(ouOut){};
+\draw [HX, thick] (0.5\templen-5mm,0) node(ouIn){} --
+	node [yshift=-2\baselineskip, gray] {\scriptsize unité extérieure}
+	++(1,0) node (ouOut) {};
 
 % refrigerant lines, heating
 \begin{scope}[visible on=<{1,4}>]
