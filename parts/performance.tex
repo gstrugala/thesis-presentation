@@ -114,14 +114,14 @@
 				 \phantom{\,\si{\celsius}}\SI{26.6}{\celsius}},
 	yticklabels={0, 3, \SI{6.9}{\kilo\watt}}]
 
-\addplot[only marks, scatter, scatter src=explicit, mark size=.7pt,
-    	 colormap name=og]
-	table[x=Toa, y=Qh, meta=f] {data/Qh-raw.tsv};
+\addplot [only marks, scatter, scatter src=explicit, mark size=.7pt,
+    	  colormap name=og]
+	table [x=Toa, y=Qh, meta=f] {data/Qh-raw.tsv};
 
 \end{axis}
 
-\node[anchor=mid west, font=\footnotesize] at (p5cl cs:0,13) {\Qh};
-\node[anchor=base west, font=\footnotesize]
+\node [anchor=mid west, font=\footnotesize] at (p5cl cs:0,13) {\Qh};
+\node [anchor=base west, font=\footnotesize]
 	at (t5cr cs:3.5,0) {\To};
 
 \end{slide}
@@ -178,12 +178,12 @@
 	ytick={3.5, 3.8},
 	yticklabels={3.5,\SI{3.8}{\kilo\watt}},
 	at={(p5cl cs:2,12)},
-	anchor=south west,
-	]
+	anchor=south west]
 \addplot [thick, gray] table [x=TIME, y=Qc-exp] {data/cooling-io.tsv};
 \addplot [thick,  col] table [x=TIME, y=Qc-sim] {data/cooling-io.tsv};
 \draw [latex-] (axis cs:1.7, 3.76) |- ++(3\quanta, 4\quanta)
-	node[right, inner sep=3pt] {\footnotesize \SI{6.5}{\percent} error};
+	node [right, inner sep=3pt]
+	{\footnotesize \SI{6.5}{\percent} d'erreur};
 \draw [latex-] (axis cs:1.7, 3.5148) |- ++(0mm, -4\quanta);
 
 \nextgroupplot[
@@ -193,12 +193,11 @@
 	ytick={0.84, 0.94},
 	yticklabels={840,\SI{940}{\watt}},
 	at={(p5cl cs:2,7)},
-	anchor=south west,
-	]
+	anchor=south west]
 \addplot [thick, gray] table [x=TIME, y=Pel-exp] {data/cooling-io.tsv};
 \addplot [thick, col] table [x=TIME, y=Pel-sim] {data/cooling-io.tsv};
 \draw [latex-] (axis cs:0.5833, 0.91648) |- ++(3\quanta, 4\quanta)
-	node[right, inner sep=3pt] {\footnotesize \SI{8}{\percent} error};
+	node [right, inner sep=3pt] {\footnotesize \SI{8}{\percent} d'erreur};
 \draw [latex-] (axis cs:0.5833, 0.84669) |- ++(0mm, -4\quanta);
 
 
@@ -210,12 +209,11 @@
 	ytick={0, 100},
 	yticklabels={0,1},
 	at={(p5cl cs:2,2)},
-	anchor=south west,
-	]
+	anchor=south west]
 \addplot [thick, gray] table [x=TIME, y=RHr] {data/cooling-io.tsv};
 \addplot [thick] coordinates {(0,5) (3,5)}
-	node [fill=white, pos=.5, inner sep=3pt, font=\footnotesize, anchor=mid]
-	{valeur nominale};
+	node [fill=white, pos=.5, inner sep=3pt,
+		  font=\footnotesize, anchor=mid] {valeur nominale};
 
 \end{groupplot}
 
@@ -223,7 +221,7 @@
 \node [anchor=mid west] at (p5cl cs:1,9) {\footnotesize\Pel};
 \node [anchor=mid west] at (p5cl cs:1,5) {\footnotesize $ \phi_r $};
 \node [gray, anchor=base] at ($(t5cl cs:2,14)+(.5\colv,0)$)
-	{\scriptsize measurements};
+	{\scriptsize mesures};
 \node [col, anchor=base] at ($(t5cl cs:2,11)+(.5\colv,0)$)
 	{\scriptsize simulation};
 
@@ -261,28 +259,28 @@
 \addplot[col, very thick, domain=0:1] {1.676*x -0.676*x^2}
 	coordinate (phi1);
 \node[left, font=\scriptsize, inner sep=3pt]
-	at (axis cs:0.77,1) {measurements};
+	at (axis cs:0.77,1) {mesures};
 \node[left, font=\scriptsize, col, inner sep=3pt]
 	at (axis cs:0.15,0.3) {fit};
 	
 
 \nextgroupplot[visible on=<1>, ytick={0, 0.16, 0.77, 1}]
 
-\addplot[only marks, mark size=.7pt]
-	table[x=nu, y=phi2] {data/phi-nu-heating.tsv};
+\addplot [only marks, mark size=.7pt]
+	table [x=nu, y=phi2] {data/phi-nu-heating.tsv};
 \def\slope{1.524}
 \def\intercept{0.561}
-\addplot[col, very thick, domain=0:1]
+\addplot [col, very thick, domain=0:1]
 	{\slope*x - \intercept*(1 - exp(-\slope*x/\intercept))}
 	coordinate (phi2);
 
 \end{groupplot}
 
-\node[font=\scriptsize, align=left, anchor=base west]
+\node [font=\scriptsize, align=left, anchor=base west]
 	at (t5cl cs:1,0) {fréquence\\normalisée};
-\node[font=\scriptsize, anchor=mid west, visible on=<1>]
+\node [font=\scriptsize, anchor=mid west, visible on=<1>]
 	at (p5cl cs:4.2,14) {$ \dfrac{\Qh}{\SI{6.5}{\kilo\watt}} $};
-\node[font=\scriptsize, anchor=mid west, visible on=<1>]
+\node [font=\scriptsize, anchor=mid west, visible on=<1>]
 	at (p5cl cs:4.2,7) {$ \dfrac{\Pel}{\SI{2.87}{\kilo\watt}} $};
 
 
@@ -305,35 +303,35 @@
 	ytick={0, 0.57, 1, 1.23},
 	at={(p5cr cs:1,9)}]
 
-\addplot[only marks, mark size=.7pt]
-	table[x=nu, y=phic1] {data/phi-nu-cooling.tsv};
-\addplot[col, very thick, domain=0:1.28] {1.05946*x - 0.05946*x^2}
+\addplot [only marks, mark size=.7pt]
+	table [x=nu, y=phic1] {data/phi-nu-cooling.tsv};
+\addplot [col, very thick, domain=0:1.28] {1.05946*x - 0.05946*x^2}
 	coordinate (phi1);
-\node[left, font=\scriptsize, inner sep=3pt]
-	at (axis cs:0.78,0.95) {measurements};
-\node[left, font=\scriptsize, col, inner sep=3pt]
+\node [left, font=\scriptsize, inner sep=3pt]
+	at (axis cs:0.78,0.95) {mesures};
+\node [left, font=\scriptsize, col, inner sep=3pt]
 	at (axis cs:0.5,0.3) {fit};
 	
 
 \nextgroupplot[
 	visible on=<2>,
 	ymax=1.3,
-	ytick={0, 0.49, 1, 1.3},]
+	ytick={0, 0.49, 1, 1.3}]
 
-\addplot[only marks, mark size=.7pt]
-	table[x=nu, y=phic2] {data/phi-nu-cooling.tsv};
+\addplot [only marks, mark size=.7pt]
+	table [x=nu, y=phic2] {data/phi-nu-cooling.tsv};
 
 \def\slope{1.363}
 \def\intercept{0.372}
-\addplot[col, very thick, domain=0:1.28]
+\addplot [col, very thick, domain=0:1.28]
 	{\slope*x - \intercept*(1 - exp(-\slope*x/\intercept))}
 	coordinate (phi2);
 
 \end{groupplot}
 
-\node[font=\scriptsize, anchor=mid west, visible on=<2>]
+\node [font=\scriptsize, anchor=mid west, visible on=<2>]
 	at (p5cl cs:4.2,14) {$ \dfrac{\Qc}{\SI{3.6}{\kilo\watt}} $};
-\node[font=\scriptsize, anchor=mid west, visible on=<2>]
+\node [font=\scriptsize, anchor=mid west, visible on=<2>]
 	at (p5cl cs:4.2,7) {$ \dfrac{\Pel}{\SI{0.96}{\kilo\watt}} $};
 
 \end{slide}
@@ -444,7 +442,7 @@
 	{1 + 0.6*(tanh(0.144*x - 0.724) - 1)}
 		node [mid left, pos=0, inner sep=3pt] {\scriptsize fit};
 
-\node [right] at (axis cs:11, 0.46) {\scriptsize measuremements};
+\node [right] at (axis cs:11, 0.46) {\scriptsize mesures};
 
 \end{axis}
 
@@ -499,7 +497,7 @@
 \node [anchor=mid west] at (p5cl cs:1,12) {\footnotesize\Qcs};
 \node [anchor=mid west] at (p5cl cs:1,6) {\footnotesize\Qcl};
 \node [gray, anchor=base] at ($(t5cl cs:3,12)+(.5\colv,0)$)
-	{\scriptsize measurements};
+	{\scriptsize mesures};
 \node [col, anchor=base] at ($(t5cl cs:3,9)+(.5\colv,0)$)
 	{\scriptsize simulation};
 
@@ -610,13 +608,13 @@
 	font=\footnotesize]
 
 \foreach \i in {1, 2, 3}{
-	\addplot [col!20, mark=*, mark size=1pt, visible on=<3->]
+	\addplot [col!50, mark=*, mark size=1pt, visible on=<3->]
 		table [x=Toa, y=Q_at_f1_Tr\i] {data/Qh-To-gen.tsv};}
-\node [col!20, right, xshift=3mm, visible on=<3->]
+\node [col!30, right, xshift=3mm, visible on=<3->]
 	at (axis cs:15, 2.287) {$ \nu = 0.1 $};
 
 \foreach \i in {1, 2, 3}{
-	\addplot [col!60, mark=*, mark size=1pt, visible on=<2->]
+	\addplot [col!70, mark=*, mark size=1pt, visible on=<2->]
 		table [x=Toa, y=Q_at_f2_Tr\i] {data/Qh-To-gen.tsv};}
 \node [col!60, right, xshift=3mm, visible on=<2->]
 	at (axis cs:15, 4.964) {$ \nu = 0.5 $};
@@ -627,11 +625,11 @@
 \node [col, right, xshift=3mm] at (axis cs:15, 7.420) {$ \nu = 1 $};
 
 \tikzset{inner sep=3pt}
-\draw (axis cs:5, 8.5) node[left] (T1) {\SI{18.3}{\celsius}}
+\draw (axis cs:5, 8.5) node [left] (T1) {\SI{18.3}{\celsius}}
 	  -- ++(7mm,0pt) -- (axis cs:10, 7.34)
-	  (T1.east)++(0pt,-5mm) node[left] (T2) {\SI{21.1}{\celsius}}
+	  (T1.east)++(0pt,-5mm) node [left] (T2) {\SI{21.1}{\celsius}}
 	  -- ++(7mm,0pt) -- (axis cs:10, 7.16)
-	  (T2.east)++(0pt,-5mm) node[left] (T3) {\SI{23.9}{\celsius}}
+	  (T2.east)++(0pt,-5mm) node [left] (T3) {\SI{23.9}{\celsius}}
 	  -- ++(7mm,0pt) -- (axis cs:10, 6.8);
 \node [anchor=base east] at ($(T1.base west)-(2\quanta,0pt)$) {\Tr};
 
