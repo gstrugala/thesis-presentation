@@ -2,12 +2,14 @@
 \begin{slide}[Les PàCCV adaptent leur capacité aux besoins\\
 			  pour fonctionner de façon continue]
 
-% Illustration
-\only<1>{
-\node [anchor=mid west, align=left] at (p5cl cs:1,11) {capacité\\fixe};
-\node [anchor=mid west, align=left] at (p5cl cs:1,3) {capacité\\variable};
+%\drawhelplines
 
-\begin{scope}[shift={(p5cr cs:1,10)},
+% Illustration
+\only<1->{
+\node [anchor=mid west, align=left] at (p5cl cs:1,13) {capacité\\fixe};
+\node [anchor=mid west, align=left] at (p5cl cs:1,6) {capacité\\variable};
+
+\begin{scope}[shift={(p5cr cs:1,12)},
 			  x=\bigcol/6+\baselineskip/6, y=3\baselineskip]
 
 \draw [semithick] (0,.3333333) -- (3,.33333333) |- (6,.666666);
@@ -24,10 +26,10 @@
 \end{scope}
 
 
-\node [becomes, rotate=180] at (p5cr cs:2,7.5) {};
+\node [becomes, rotate=180] at (p5cr cs:2,10) {};
 
 
-\begin{scope}[shift={(p5cr cs:1,2)},
+\begin{scope}[shift={(p5cr cs:1,5)},
 			  x=\bigcol/6+\baselineskip/6, y=\baselineskip]
 
 \draw [semithick] (0,1) -- (3,1) |- (6,2);
@@ -38,11 +40,11 @@
 \end{scope}
 
 
-\begin{scope}[shift={($(p5cr cs:1,3)+(\colv+\baselineskip,0)$)},
+\begin{scope}[shift={($(p5cr cs:1,6)+(\colv+\baselineskip,0)$)},
 			  x=\bigcol/6+\baselineskip/6, y=\baselineskip]
 
 % use rect line cap for joining but clip the part sticking out
-\clip (p5cr cs:1,3) rectangle ++(2\colvsep,3\baselineskip);
+\clip (p5cr cs:1,6) rectangle ++(2\colvsep,3\baselineskip);
 \def\phase{46.87329}
 \draw [col, very thick, line cap=rect]
 	plot [domain=0:3, samples=100, smooth]
@@ -50,31 +52,48 @@
 \end{scope}
 }
 
-%\drawhelplines
+\node [becomes, rotate=180, visible on=<2>] at (p5cr cs:2,4) {};
 
-% Advantages
-\node (N1) [anchor=base, align=left, visible on=<2->]
-	at ($(t5cl cs:2,12)+(\colv/2,0)$)
-	{Et ainsi elles permettent d'éviter un fonctionnement intermittent};
-\node (S1) [anchor=base west, align=left, visible on=<2->]
-	at ($(N1.base west)-(0,5\baselineskip)$)
-	{Il y a une meilleure\\performance saisonnière};
-\node (S2) [anchor=base east, align=left, visible on=<3->]
-	at ($(N1.base east)-(0,5\baselineskip)$)
-	{Les échangeurs peuvent\\être surdimensionnés};
-\node (P1) [anchor=base east, align=left, visible on=<4>]
-	at ($(S2.base east)-(0,5\baselineskip)$)
-	{La plage de température\\est plus large};
-\node [becomes, rotate=180, visible on=<2->]
-	at ($(N1.south -| S1)!0.5!(S1.north)$) {};
-\node [becomes, rotate=180, visible on=<3->]
-	at ($(N1.south -| S2)!0.5!(S2.north)$) {};
-\node [becomes, rotate=90, visible on=<4>]
-	at ($(S1.east)!0.5!(S2.west)$) {};
-\node [becomes, rotate=180, visible on=<4>]
-	at ($(S2.south)!0.5!(P1.north)$) {};
+\node [anchor=base west, visible on=<2>] at (t5cr cs:1,0) {
+	\begin{minipage}[b]{2\colvsep}
+	\begin{listed}
+		\item Opère à basse température
+		\item COP saisonnier plus élevé
+	\end{listed}
+	\end{minipage}};
+
+%% Advantages
+%\node (N1) [anchor=base, align=left, visible on=<2->]
+%	at ($(t5cl cs:2,12)+(\colv/2,0)$)
+%	{Et ainsi elles permettent d'éviter un fonctionnement intermittent};
+%\node (S1) [anchor=base west, align=left, visible on=<2->]
+%	at ($(N1.base west)-(0,5\baselineskip)$)
+%	{Il y a une meilleure\\performance saisonnière};
+%\node (P1) [anchor=base, align=left, visible on=<2->]
+%	at ($(S1.base)-(0,5\baselineskip)$)
+%	{La consommation globale\\est réduite};
+%\node (S2) [anchor=base east, align=left, visible on=<3->]
+%	at ($(N1.base east)-(0,5\baselineskip)$)
+%	{Les échangeurs sont dimensionnés\\pour des conditions extrêmes};
+%\node (P2) [anchor=base, align=left, visible on=<4>]
+%	at ($(S2.base)-(0,5\baselineskip)$)
+%	{La plage de température\\est plus large};
+%\node [becomes, rotate=180, visible on=<2->]
+%	at ($(N1.south -| S1)!0.5!(S1.north)$) {};
+%\node [becomes, rotate=180, visible on=<2->]
+%	at ($(S1.south)!0.5!(P1.north)$) {};
+%\node [becomes, rotate=180, visible on=<3->]
+%	at ($(N1.south -| S2)!0.5!(S2.north)$) {};
+%\node [becomes, rotate=90, visible on=<3->]
+%	at ($(S1.east)!0.5!(S2.west)$) {};
+%\node [becomes, rotate=180, visible on=<4>]
+%	at ($(S2.south)!0.5!(P2.north)$) {};
+%\node [becomes, rotate=90, visible on=<4>]
+%	at ($(P1.east)!0.5!(P2.west)$) {};
 
 \end{slide}
+
+
 
 
 
@@ -82,7 +101,7 @@
 \begin{slide}[Un modèle dynamique adéquat est nécessaire\\
 			  pour simuler correctement les PàCCV]
 
-\node[anchor=base west] (text) at (t5cl cs:0,4) {
+\node [anchor=base west] (text) at (t5cl cs:0,4) {
 	\begin{minipage}[b]{\dimexpr2\colvsep+4\quanta}\raggedright
 		\emph{Exemple}\\[2\baselineskip]
 		Simuler le profil de consommation\\
@@ -90,10 +109,70 @@
 		avec un pas de temp $ \Delta t = \SI{1}{\minute} $
 	\end{minipage}};
 
-\node[anchor=south east] at (p5cr cs:4,3)
+\node [anchor=south east] at (p5cr cs:4,3)
 	{\includegraphics[height=9\baselineskip]{pictures/plex-unit}};
 
 \end{slide}
+
+
+
+
+
+% Ductless mini-split
+\begin{slide}[On se concentre sur des PàCCV air-air,\\
+			  de type mini-split]
+
+\node (pic) [anchor=south west] at (p5cr cs:1,1.5)
+	{\includegraphics[width=3\colvsep]{pictures/mini-split}};
+\node[yshift=-\quantum, anchor=north west] at (pic.south west)
+	{\scalebox{.3}{\textcopyright{} ENERGY STAR}};
+
+
+\begin{scope}[shift={($(p5cl cs:0,5)+(.2,-.2)+(.6pt,0)$)}]
+
+% air flux
+\path [draw=white, line width=1mm, -{Triangle[scale=0.7]},
+	   shade path={left color=col!30, right color=col}]
+	   (.2,3.4) .. controls (.2,3.3) and (.2,2.55) .. (.5,2.25)
+	   .. controls (.8, 1.95) and (1.3,1.95) .. (1.4,1.95);
+\node (r) [above, yshift=1mm] at (.2,3.4) {$r$};
+\node (s) [right, xshift=1mm] at (1.4,1.95) {$s$};
+\node [above right, yshift=2mm, gray] at (.5,2.25) {\Va};
+
+% indoor unit
+\filldraw [gray!50, very thick] (0,3) rectangle (-.2,2);
+\draw [dotted] (0,3) -- (0.5,3);
+\draw [very thick, line cap=rect] (.5,3) -- (1,3)
+	node [right, align=left, font=\footnotesize,
+		  shift={(2\quantum,-2\quantum)}] {unité\\intérieure}
+	to [out=270, in=60] (.9,2.3)
+	(0,3) |- (0.5,2) -- ++(340:.2)
+	(.75,2.15) -- ++(340:.2);
+
+\end{scope}
+
+% outdoor unit
+\begin{scope}[shift={($(p5cl cs:0,1.5)+(.2,0)+(\quantum+1ex,0)$)}]
+
+\path [draw=white, line width=1mm, -{Triangle[scale=0.7]},
+	   shade path={left color=col, right color=col!30}]
+	(-.2,1.1) -- (1.5,1.1);
+\node [anchor=east, xshift=-\quantum] at (-.2,1.1) {$o$};
+
+\fill [gray!50] (-.6pt,0) rectangle ($(1,.2)+(.6pt,0)$);
+\draw [very thick] (0,0.6) -- (0,.2) -| (1,0.6)
+				   (1,1.8) |-
+				   node [right, align=left, font=\footnotesize,
+		  				 shift={(2\quantum,-2\quantum)}]
+		  		   {unité\\extérieure} (0,2.2) -- (0,1.8);
+\draw [thick, dotted] (0,1.7) -- (0,0.7);
+\draw [thick] foreach \y in {0.7, 0.9, ..., 1.7}{(.9,\y) -- (1.1,\y)};
+
+\end{scope}
+
+\end{slide}
+
+
 
 
 
@@ -124,9 +203,8 @@
 	\node [font=\footnotesize, gray, anchor=east] (Tr\i)
 		at (T\i -| Toa.east) {\SI{\Ti}{\celsius}};
 	\draw [gray] (T\i)++(4.5pt,0) -- ($(Tr\i.west)-(4pt,0)$);}
-\node [anchor=east, yshift=-2\baselineskip, font=\scriptsize, align=left,
-	  gray]
-	at (Tr4.east) {Température\\intérieure};
+\node [anchor=west, yshift=-2\baselineskip, gray, font=\footnotesize]
+	at (Tr4.west) {\Tr};
 }
 
 \def\displayat{2}
@@ -160,7 +238,7 @@
 		\end{axis}
 		\ifnum \row=0
 			\node [xshift=.5\colv, anchor=base, visible on=<3-4>]
-				at (p5cl cs:\col,14){\ma[\collabel]};
+				at (p5cl cs:\col,14){\Va[\collabel]};
 		\fi
 	}
 	\pgfmathparse{2+\row}\let\labelypos\pgfmathresult
@@ -175,11 +253,11 @@
 
 \uncover<3-4>{
 	\node [align=left, font=\footnotesize] (required)
-		at (pct.202 |- row0) {paires $ (f, \dot m) $\\nécessaires};
+		at (pct.202 |- row0) {paires $ (f,\skew{3}\dot V) $\\nécessaires};
 	\draw (pct.202)++(0,-4pt) -- ($(required.north)+(0,4pt)$);}
 \uncover<4>{
 	\node [align=left, font=\footnotesize] (provided)
-		at (pct.158 |- row2) {paire $ (f, \dot m) $\\fournie};
+		at (pct.158 |- row2) {paire $ (f,\skew{3}\dot V) $\\fournie};
 	\draw [col] (pct.158)++(0,4pt) -- ($(provided.south)-(0,4pt)$);}
 
 
@@ -205,6 +283,25 @@
 
 
 
+
+
+% Assemblage TRNSYS
+\begin{slide}[Le modèle est constitué de\\
+			  deux composants TRNSYS]
+
+\fill [col!50] (page cs:22.5,-21) rectangle (page cs:32,-31)
+			   (page cs:44,-21) rectangle (page cs:52,-31);
+\node [anchor=west] at (p5cl cs:0,7)
+	{\includegraphics[width=\dimexpr 4\colvsep+\colv-\quantum \relax]
+		{pictures/TRNSYS-assembly}};
+
+\end{slide}
+
+
+
+
+
+
 \begin{slide}[Les stratégies de contrôle et les performances\\ 
 			  sont évaluées expérimentalement]
 
@@ -225,116 +322,5 @@
 		\end{listed}
 		sont imposés en contrôlant la quantité d'air entrant
 	\end{minipage}};
-
-\end{slide}
-
-
-
-\begin{slide}[Le modèle parvient à prévoir les performances\\
-			  \only<2>{et à reproduire les principaux comportements}]
-
-\only<1>{
-\begin{groupplot}[group style={group size=1 by 2,},
-				  width=\bigcol+\colv,
-				  xmin=0, xmax=3,
-				  clip=false,
-				  plot options,]
-\nextgroupplot[
-	height=3\baselineskip,
-	axis x line=none,
-	ymin=3.5, ymax=3.8,
-	ytick={3.5, 3.8},
-	yticklabels={3.5,\SI{3.8}{\kilo\watt}},
-	at={(p5cl cs:2,10)},
-	anchor=south west]
-\addplot [thick, gray] table [x=TIME, y=Qc-exp] {data/cooling-io.tsv};
-\addplot [thick,  col] table [x=TIME, y=Qc-sim] {data/cooling-io.tsv};
-\draw[latex-] (axis cs:1.7, 3.76) |- ++(3\quanta, 4\quanta)
-	node [right, inner sep=3pt]
-		{\footnotesize \SI{6.5}{\percent} d'erreur};
-\draw [latex-] (axis cs:1.7, 3.5148) |- ++(0mm, -4\quanta);
-
-\nextgroupplot[
-	height=3\baselineskip,
-	xtick={0, 3},
-	xticklabels={0, \phantom{h\,}\SI{3}{\hour}},
-	ymin=0.84, ymax=0.94,
-	ytick={0.84, 0.94},
-	yticklabels={840,\SI{940}{\watt}},
-	at={(p5cl cs:2,3)},
-	anchor=south west]
-\addplot [thick, gray] table [x=TIME, y=Pel-exp] {data/cooling-io.tsv};
-\addplot [thick, col] table [x=TIME, y=Pel-sim] {data/cooling-io.tsv};
-\draw [latex-] (axis cs:0.5833, 0.91648) |- ++(3\quanta, 4\quanta)
-	node [right, inner sep=3pt] {\footnotesize \SI{8}{\percent} d'erreur};
-\draw [latex-] (axis cs:0.5833, 0.84669) |- ++(0mm, -4\quanta);
-
-\end{groupplot}
-
-\node[anchor=mid west] at (p5cr cs:0,13) {\footnotesize Capacité};
-\node[anchor=mid west] at (p5cr cs:0,6) {\footnotesize Puissance};
-\node[gray, anchor=base west] at (t5cr cs:1.4,13.5)
-	{\scriptsize mesures};
-\node[col, anchor=base west] at (t5cr cs:1.4,9) {\scriptsize simulation};
-}
-
-
-\only<2>{
-\begin{groupplot}[group style={group size=1 by 3,},
-				  width=\bigcol+\colvsep,
-				  xmin=0, xmax=4,
-				  clip=false,
-				  plot options,]
-\nextgroupplot[
-	height=3\baselineskip,
-	axis x line=none,
-	ymin=0, ymax=57,
-	ytick={0, 57},
-	yticklabels={0, \SI{57}{\hertz}},
-	at={(p5cr cs:1,11)},
-	anchor=south west,
-	]
-\addplot[thick, gray] table[x=TIME, y=f-exp] {data/cooling-sim.tsv};
-\addplot[thick, col] table[x=TIME, y=f-sim] {data/cooling-sim.tsv};
-
-
-\nextgroupplot[
-	height=2\baselineskip,
-	axis x line=none,
-	ymin=14, ymax=24,
-	ytick={14, 24},
-	yticklabels={14, \SI{24}{\celsius}},
-	at={(p5cr cs:1,7)},
-	anchor=south west,
-	]
-\addplot[thick, gray] table[x=TIME, y=Ts-exp] {data/cooling-sim.tsv};
-\addplot[thick, col] table[x=TIME, y=Ts-sim] {data/cooling-sim.tsv};
-\draw[latex-] (axis cs:2.6, 17.373) |- ++(3\quanta, 4\quanta)
-	node[right, inner sep=3pt] {\footnotesize\SI{3.7}{\celsius}};
-\draw[latex-] (axis cs:2.6, 13.689) -- ++(0mm,-4\quanta);
-
-
-\nextgroupplot[
-	height=3\baselineskip,
-	xtick={0, 4},
-	xticklabels={0, \phantom{h\,}\SI{4}{\hour}},
-	ymin=23, ymax=44,
-	ytick={23, 44},
-	yticklabels={23, \SI{44}{\celsius}},
-	at={(p5cr cs:1,2)},
-	anchor=south west,
-	]
-\addplot[thick] table[x=TIME, y=Toa] {data/cooling-sim.tsv}
-	node[pos=0.7, fill=white, font=\footnotesize, inner sep=3pt] {\To};
-\addplot[thick, gray] table[x=TIME, y=Tr-exp] {data/cooling-sim.tsv};
-\addplot[thick, col] table[x=TIME, y=Tr-sim] {data/cooling-sim.tsv};
-
-\end{groupplot}
-
-\node[anchor=mid west] at (p5cr cs:0,14) {\footnotesize\fc};
-\node[anchor=mid west] at (p5cr cs:0,9) {\footnotesize\Ts};
-\node[anchor=mid west] at (p5cr cs:0,5) {\footnotesize\Tr};
-}
-
 
 \end{slide}
