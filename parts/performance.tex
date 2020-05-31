@@ -211,8 +211,8 @@
 	at={(p5cl cs:2,2)},
 	anchor=south west]
 \addplot [thick, gray] table [x=TIME, y=RHr] {data/cooling-io.tsv};
-\addplot [thick] coordinates {(0,5) (3,5)}
-	node [fill=white, pos=.5, inner sep=3pt,
+\addplot [thick, col] coordinates {(0,5) (3,5)}
+	node [black, fill=white, pos=.5, inner sep=3pt,
 		  font=\footnotesize, anchor=mid] {valeur nominale};
 
 \end{groupplot}
